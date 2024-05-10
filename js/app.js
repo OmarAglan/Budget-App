@@ -16,3 +16,16 @@ class UI {
     this.itemID = 0;
   }
 }
+
+function eventListeners() {
+  const BudgetForm = document.getElementById('budget-form');
+  const ExpenseForm = document.getElementById('expense-form');
+  const ExpenseList = document.getElementById('expense-list');
+
+  // new instance of UI Class
+  const ui = new UI();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  eventListeners();
+})
