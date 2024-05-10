@@ -200,7 +200,7 @@ body {
   .expense-icon,
   .balance-icon {
     font-size: 3.5rem;
-    color: var(--mainBlue);
+    color: var(--mainGreen);
   }
 }
 .list-item {
