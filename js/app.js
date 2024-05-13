@@ -1,4 +1,7 @@
 class UI {
+  /**
+   * Constructor function for initializing UI elements.
+   */
   constructor() {
     this.budgetFeedback = document.querySelector(".budget-feedback");
     this.expenseFeedback = document.querySelector(".expense-feedback");
@@ -15,8 +18,17 @@ class UI {
     this.itemList = [];
     this.itemID = 0;
   }
-}
 
+  //Submit budget method
+
+  submitBudgetForm() {
+    console.log("Hello Es6");
+  }
+}
+/**
+ * A function that sets up event listeners for budget and expense forms and creates a new instance of the UI class.
+ *
+ */
 function eventListeners() {
   const BudgetForm = document.getElementById('budget-form');
   const ExpenseForm = document.getElementById('expense-form');
@@ -24,6 +36,26 @@ function eventListeners() {
 
   // new instance of UI Class
   const ui = new UI();
+
+  // budget form submit
+  BudgetForm.addEventListener('submit', function (event){
+    event.preventDefault();
+
+    ui.submitBudgetForm();
+    
+
+  })
+
+  // Expense form submit
+  ExpenseForm.addEventListener('submit', function (event) {
+
+    event.preventDefault();
+
+  })
+
+  // expense click event
+  ExpenseList.addEventListener('click', function () {
+  })
 }
 
 document.addEventListener('DOMContentLoaded', function() {
