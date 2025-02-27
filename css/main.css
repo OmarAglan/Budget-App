@@ -304,7 +304,9 @@ body {
 .expense-item {
   height: 2rem;
 }
-/* Add these styles for dark mode compatibility */
+
+/* Remove all dark mode related styles below */
+/* Delete these styles:
 [data-bs-theme="dark"] {
   --mainWhite: #212529;
   --mainDark: #f5f5f5;

@@ -41,4 +41,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-[Visit the Budget Calculator](https://budget-tracker-demo.netlify.app)
+[Visit the Budget Calculator](https://omardev.engineer/Budget-App/)

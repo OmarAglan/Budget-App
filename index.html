@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="auto">
+<html lang="en">
   <head>
-    <script src="js/color-modes.js"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
@@ -49,30 +48,49 @@
             <!-- Add this right before the closing </ul> in the navbar -->
             <li class="nav-item ms-3">
               <div class="dropdown">
-                <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" 
-                        id="bd-theme" 
-                        type="button" 
-                        aria-expanded="false" 
-                        data-bs-toggle="dropdown" 
-                        aria-label="Toggle theme (auto)">
+                <button
+                  class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
+                  id="bd-theme"
+                  type="button"
+                  aria-expanded="false"
+                  data-bs-toggle="dropdown"
+                  aria-label="Toggle theme (auto)"
+                >
                   <i class="bi bi-circle-half me-2"></i>
-                  <span class="d-lg-none ms-2" id="bd-theme-text">Toggle theme</span>
+                  <span class="d-lg-none ms-2" id="bd-theme-text"
+                    >Toggle theme</span
+                  >
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme">
+                <ul
+                  class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="bd-theme"
+                >
                   <li>
-                    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                    <button
+                      type="button"
+                      class="dropdown-item d-flex align-items-center"
+                      data-bs-theme-value="light"
+                    >
                       <i class="bi bi-sun-fill me-2"></i>
                       Light
                     </button>
                   </li>
                   <li>
-                    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                    <button
+                      type="button"
+                      class="dropdown-item d-flex align-items-center"
+                      data-bs-theme-value="dark"
+                    >
                       <i class="bi bi-moon-fill me-2"></i>
                       Dark
                     </button>
                   </li>
                   <li>
-                    <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto">
+                    <button
+                      type="button"
+                      class="dropdown-item d-flex align-items-center active"
+                      data-bs-theme-value="auto"
+                    >
                       <i class="bi bi-circle-half me-2"></i>
                       Auto
                     </button>
