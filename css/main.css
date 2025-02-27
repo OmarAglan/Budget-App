@@ -23,9 +23,10 @@ body {
 .btn-light,
 .btn-light:hover,
 .btn-light:focus {
-  color: #333;
+  color: #000000;
   text-shadow: none; /* Prevent inheritance from `body` */
 }
+
 
 .cover-container {
   max-width: 40rem;

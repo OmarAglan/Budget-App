@@ -23,6 +23,16 @@ class UI {
 
   submitBudgetForm() {
     console.log("Hello Es6");
+    const value = this.budgetInput.value;
+
+    if (value === '0' || value < 0){
+      this.budgetFeedback.classList.add('showItem');
+      this.budgetFeedback.innerHTML = `<p>value cannot be empty or negative</p>`;
+      const self = this;
+      setTimeout(function(){
+        self.budgetFeedback.classList.remove('showItem');
+      }, 3000)
+    }
   }
 }
 /**
