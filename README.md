@@ -8,6 +8,7 @@ A web-based application for tracking and managing personal finances. This tool h
 - Calculate remaining budget
 - Responsive design using Bootstrap 5
 - Interactive UI for adding and removing budget items
+- Proper financial formatting with thousands separators and decimal places
 
 ## Technologies Used
 
