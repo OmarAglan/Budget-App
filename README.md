@@ -9,6 +9,7 @@ A web-based application for tracking and managing personal finances. This tool h
 - Responsive design using Bootstrap 5
 - Interactive UI for adding and removing budget items
 - Proper financial formatting with thousands separators and decimal places
+- Light and dark mode support
 
 ## Technologies Used
 
@@ -30,6 +31,7 @@ To use the Budget Calculator:
 - Add income sources and expense items
 - View your remaining budget in real-time
 - Organize your finances with a clean, intuitive interface
+- Toggle between light and dark mode for comfortable viewing
 
 ## Contributing
 
@@ -39,5 +41,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-<!-- Keeping the original website link -->
-[Visit the Budget Calculator](https://your-website-link.com)
+[Visit the Budget Calculator](https://budget-tracker-demo.netlify.app)

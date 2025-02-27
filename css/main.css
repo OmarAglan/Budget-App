@@ -304,3 +304,35 @@ body {
 .expense-item {
   height: 2rem;
 }
+/* Add these styles for dark mode compatibility */
+[data-bs-theme="dark"] {
+  --mainWhite: #212529;
+  --mainDark: #f5f5f5;
+}
+
+[data-bs-theme="dark"] .card {
+  background-color: #2b3035;
+  color: #f5f5f5;
+}
+
+[data-bs-theme="dark"] .expense-item {
+  background-color: #2b3035;
+}
+
+[data-bs-theme="dark"] .list-item {
+  color: #f5f5f5;
+}
+
+[data-bs-theme="dark"] .showBlack {
+  color: #f5f5f5;
+}
+
+/* Theme toggle button styles */
+.dropdown-item:active,
+.dropdown-item:focus {
+  outline: none;
+}
+
+.dropdown-item.active {
+  font-weight: 600;
+}
