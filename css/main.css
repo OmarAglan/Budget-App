@@ -338,3 +338,265 @@ body {
 .dropdown-item.active {
   font-weight: 600;
 }
+.card {
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-body {
+  padding: 1.5rem !important;
+}
+
+.form-control, .form-select {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  transform: translateY(-1px);
+}
+
+.btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #b02a37;
+  transform: translateY(-1px);
+}
+
+.expense-list__info {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.expense-item {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.expense-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.expense-amount {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.expense-icons a {
+  color: #6c757d;
+  transition: color 0.2s;
+}
+
+.expense-icons a:hover {
+  color: #0d6efd;
+}
+.expense-title {
+  font-weight: 500;
+  color: var(--mainDark);
+}
+
+.expense-item .expense-amount {
+  font-weight: 600;
+  color: var(--mainRed);
+}
+
+.budget-form {
+  padding: 1rem;
+  border-radius: 0.25rem;
+}
+
+.expense-form {
+  border: 0.15rem solid var(--mainRed);
+  padding: 1rem;
+  border-radius: 0.25rem;
+}
+
+.budget-submit {
+  background: transparent;
+  border: 0.1rem solid var(--mainGreen);
+  color: var(--mainGreen);
+}
+
+.expense-submit {
+  background: transparent;
+  border: 0.1rem solid var(--mainRed);
+  color: var(--mainRed);
+}
+
+.expense-submit:hover {
+  background: var(--mainRed);
+  color: var(--mainWhite);
+}
+
+.budget-submit:hover {
+  background: var(--mainGreen);
+  color: var(--mainDark);
+}
+
+.budget-input {
+  border: 0.05rem solid var(--mainGreen) !important;
+}
+
+.expense-input {
+  border: 0.05rem solid var(--mainRed) !important;
+}
+
+.expense-amount,
+.expense-title {
+  color: var(--mainRed);
+}
+
+.edit-icon {
+  color: var(--mainBlue);
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none !important;
+}
+
+.delete-icon {
+  color: var(--mainRed);
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none !important;
+}
+
+.edit-icon:hover {
+  color: var(--mainBlue);
+}
+
+.delete-icon:hover {
+  color: var(--mainRed);
+}
+
+.showItem {
+  display: block;
+}
+
+.info-title {
+  font-size: 1.5rem;
+}
+
+.budget {
+  font-size: 1.6rem;
+  color: var(--mainGreen);
+}
+
+.expense {
+  font-size: 1.6rem;
+  color: var(--mainRed);
+}
+
+.balance {
+  font-size: 1.6rem;
+}
+
+.budget-icon,
+.expense-icon,
+.balance-icon {
+  font-size: 2.5rem;
+  color: var(--mainBlue);
+}
+
+.showRed {
+  color: var(--mainRed);
+}
+
+.showGreen {
+  color: var(--mainGreen);
+}
+
+.showBlack {
+  color: var(--mainDark);
+}
+
+@media screen and (min-width: 992px) {
+  .budget {
+    font-size: 2.6rem;
+    color: var(--mainGreen);
+  }
+
+  .expense {
+    font-size: 2.6rem;
+    color: var(--mainRed);
+  }
+
+  .balance {
+    font-size: 2.6rem;
+  }
+
+  .budget-icon,
+  .expense-icon,
+  .balance-icon {
+    font-size: 3.5rem;
+    color: var(--mainGreen);
+  }
+}
+
+.list-item {
+  flex: 0 0 33.33%;
+  text-align: center;
+}
+
+.expense-item {
+  height: 2rem;
+}
+
+/* Remove all dark mode related styles below */
+/* Delete these styles:
+[data-bs-theme="dark"] {
+  --mainWhite: #212529;
+  --mainDark: #f5f5f5;
+}
+
+[data-bs-theme="dark"] .card {
+  background-color: #2b3035;
+  color: #f5f5f5;
+}
+
+[data-bs-theme="dark"] .expense-item {
+  background-color: #2b3035;
+}
+
+[data-bs-theme="dark"] .list-item {
+  color: #f5f5f5;
+}
+
+[data-bs-theme="dark"] .showBlack {
+  color: #f5f5f5;
+}
+
+/* Theme toggle button styles */
+.dropdown-item:active,
+.dropdown-item:focus {
+  outline: none;
+}
+
+.dropdown-item.active {
+  font-weight: 600;
+}

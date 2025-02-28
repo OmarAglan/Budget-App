@@ -17,9 +17,41 @@ class UI {
     this.expenseList = document.getElementById('expense-list');
     this.itemList = [];
     this.itemID = 0;
+
+    // Initialize charts
+    initializeCharts();
+    initializeBarChart();
+
+    // Load data from localStorage
+    this.loadFromLocalStorage();
   }
 
-  //Submit budget method
+  loadFromLocalStorage() {
+    const budget = localStorage.getItem('budget');
+    const expenses = localStorage.getItem('expenses');
+    const itemID = localStorage.getItem('itemID');
+
+    if (budget) {
+      this.budgetAmount.textContent = budget;
+    }
+
+    if (expenses) {
+      this.itemList = JSON.parse(expenses);
+      this.itemList.forEach((expense) => this.addExpense(expense));
+    }
+
+    if (itemID) {
+      this.itemID = parseInt(itemID);
+    }
+
+    this.showBalance();
+  }
+
+  saveToLocalStorage() {
+    localStorage.setItem('budget', this.budgetAmount.textContent);
+    localStorage.setItem('expenses', JSON.stringify(this.itemList));
+    localStorage.setItem('itemID', this.itemID.toString());
+  }
 
   submitBudgetForm() {
     const value = this.budgetInput.value;
@@ -31,17 +63,17 @@ class UI {
         self.budgetFeedback.classList.remove('showItem');
       }, 3000);
     } else {
-      // Format the budget amount with 2 decimal places and thousands separators
       this.budgetAmount.textContent = this.formatNumber(parseFloat(value));
       this.budgetInput.value = '';
       this.showBalance();
+      this.saveToLocalStorage();
     }
   }
 
   showBalance() {
     const expense = this.totalExpense();
-    const total = parseFloat(this.budgetAmount.textContent.replace(/,/g, '')) - expense;
-    // Format the balance with 2 decimal places and thousands separators
+    const total =
+      parseFloat(this.budgetAmount.textContent.replace(/,/g, '')) - expense;
     this.balanceAmount.textContent = this.formatNumber(total);
     if (total < 0) {
       this.balance.classList.remove('showGreen', 'showBlack');
@@ -58,39 +90,67 @@ class UI {
   submitExpenseForm() {
     const expenseValue = this.expenseInput.value;
     const amountValue = this.amountInput.value;
-  
-    if (expenseValue === '' || amountValue === '' || amountValue <= 0) {
+    const categoryValue = document.getElementById('expense-category').value;
+
+    if (
+      expenseValue === '' ||
+      amountValue === '' ||
+      amountValue <= 0 ||
+      categoryValue === ''
+    ) {
       this.expenseFeedback.classList.add('showItem');
-      this.expenseFeedback.innerHTML = `<p>Values cannot be empty or negative</p>`;
+      this.expenseFeedback.innerHTML = `<p>All fields are required and amount cannot be negative</p>`;
       const self = this;
       setTimeout(function () {
         self.expenseFeedback.classList.remove('showItem');
       }, 3000);
     } else {
-      // Changed from parseInt to parseFloat to handle decimal values
       let amount = parseFloat(amountValue);
       this.expenseInput.value = '';
       this.amountInput.value = '';
-  
+      document.getElementById('expense-category').value = '';
+
       let expense = {
         id: this.itemID,
         title: expenseValue,
-        amount: amount
+        amount: amount,
+        category: categoryValue
       };
       this.itemID++;
       this.itemList.push(expense);
       this.addExpense(expense);
       this.showBalance();
+      this.saveToLocalStorage();
     }
   }
 
   addExpense(expense) {
+    const categoryColors = {
+      groceries: 'text-success',
+      transportation: 'text-info',
+      utilities: 'text-warning',
+      entertainment: 'text-primary',
+      healthcare: 'text-danger',
+      shopping: 'text-secondary',
+      other: 'text-muted'
+    };
+    updateExpenseChart(this.itemList);
+
     const div = document.createElement('div');
     div.classList.add('expense');
     div.innerHTML = `
       <div class="expense-item d-flex justify-content-between align-items-center py-2 mb-2">
-        <h6 class="expense-title mb-0 text-uppercase list-item">${expense.title}</h6>
-        <h6 class="expense-amount mb-0 list-item text-danger">- ${this.formatNumber(expense.amount)}</h6>
+        <div class="d-flex align-items-center">
+          <h6 class="expense-title mb-0 text-uppercase list-item ${
+            categoryColors[expense.category]
+          }">
+            ${expense.title}
+            <small class="text-muted ms-2">(${expense.category})</small>
+          </h6>
+        </div>
+        <h6 class="expense-amount mb-0 list-item text-danger">- ${this.formatNumber(
+          expense.amount
+        )}</h6>
         <div class="expense-icons list-item text-end">
           <a href="#" class="edit-icon mx-2" data-id="${expense.id}">
             <i class="bi bi-pencil-square"></i>
@@ -112,12 +172,10 @@ class UI {
         return acc;
       }, 0);
     }
-    // Format the expense amount with 2 decimal places and thousands separators
     this.expenseAmount.textContent = this.formatNumber(total);
     return total;
   }
 
-  // Add a helper method to format numbers with commas and 2 decimal places
   formatNumber(number) {
     return number.toLocaleString('en-US', {
       minimumFractionDigits: 2,
@@ -135,6 +193,8 @@ class UI {
     let tempList = this.itemList.filter((item) => item.id !== id);
     this.itemList = tempList;
     this.showBalance();
+    this.saveToLocalStorage();
+    updateExpenseTrendChart(this.itemList);
   }
 
   deleteExpense(element) {
@@ -144,6 +204,8 @@ class UI {
     let tempList = this.itemList.filter((item) => item.id !== id);
     this.itemList = tempList;
     this.showBalance();
+    this.saveToLocalStorage();
+    updateExpenseChart(this.itemList);
   }
 }
 
@@ -175,4 +237,5 @@ function eventListeners() {
 
 document.addEventListener('DOMContentLoaded', function () {
   eventListeners();
+  initializeCharts();
 });
