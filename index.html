@@ -10,17 +10,14 @@
     <meta name="author" content="Omar Aglan" />
     <title>Budget Tracker - Take Control of Your Finances</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/main.css" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet" />
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="#">
+        <a class="navbar-brand fw-bold" href="index.html">
           <i class="bi bi-wallet2"></i> Budget Tracker
         </a>
         <button
@@ -42,53 +39,69 @@
             <li class="nav-item">
               <a class="nav-link" href="About.html">About</a>
             </li>
-            <!-- Theme toggle button removed -->
           </ul>
         </div>
       </div>
     </nav>
 
-    <section class="hero py-5 bg-light">
-      <div class="container py-5">
-        <div class="row h-100 align-items-center">
-          <div class="col-lg-6">
-            <h1 class="display-4 fw-bold mb-4 text-dark">
-              Smart Budget Management Made Simple
-            </h1>
-            <p class="lead mb-4 text-secondary">
-              Take control of your finances with our intuitive budget
-              calculator. Track expenses, set budgets, and achieve your
-              financial goals with ease.
-            </p>
-            <div class="d-flex gap-3">
-              <a href="Budget.html" class="btn btn-primary btn-lg shadow-sm"
-                >Start Budgeting</a
-              >
-              <a href="About.html" class="btn btn-outline-secondary btn-lg shadow-sm"
-                >Learn More</a
-              >
-            </div>
-          </div>
-          <div class="col-lg-6 d-none d-lg-block">
-            <img
-              src="img/contBcg-0.jpeg"
-              alt="Budget Management"
-              class="img-fluid rounded-3 shadow"
-            />
-          </div>
+    <div class="container py-4">
+      <!-- Page Title -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h2 class="mb-0 fw-bold"><i class="bi bi-house-door"></i> Welcome to Budget Tracker</h2>
+          <p class="text-muted">Take control of your finances today</p>
         </div>
       </div>
-    </section>
 
-    <section class="features py-5">
-      <div class="container">
-        <h2 class="text-center mb-5 fw-bold">Why Choose Our Budget Tracker?</h2>
+      <section class="hero py-4 mb-5">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="row align-items-center">
+              <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4 text-dark">
+                  Smart Budget Management Made Simple
+                </h1>
+                <p class="lead mb-4 text-secondary">
+                  Take control of your finances with our intuitive budget
+                  tracker. Track expenses, set budgets, and achieve your
+                  financial goals with ease.
+                </p>
+                <div class="d-flex gap-3">
+                  <a href="Budget.html" class="btn btn-primary btn-lg shadow-sm">
+                    <i class="bi bi-calculator me-2"></i>Start Budgeting
+                  </a>
+                  <a href="About.html" class="btn btn-outline-secondary btn-lg shadow-sm">
+                    <i class="bi bi-info-circle me-2"></i>Learn More
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-6 d-none d-lg-block">
+                <img
+                  src="img/contBcg-0.jpeg"
+                  alt="Budget Management"
+                  class="img-fluid rounded-3 shadow"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features py-4">
+        <div class="row mb-4">
+          <div class="col-12">
+            <h2 class="fw-bold"><i class="bi bi-stars"></i> Why Choose Our Budget Tracker?</h2>
+            <p class="text-muted">Discover the benefits of our budget management solution</p>
+          </div>
+        </div>
         <div class="row g-4">
           <div class="col-md-4">
             <div class="card h-100 border-0 shadow-sm">
               <div class="card-body text-center p-4">
-                <i class="bi bi-graph-up-arrow text-primary display-4 mb-3"></i>
-                <h3 class="h4">Track Expenses</h3>
+                <div class="p-3 rounded-circle bg-primary bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                  <i class="bi bi-graph-up-arrow fs-2 text-primary"></i>
+                </div>
+                <h3 class="h4 fw-bold">Track Expenses</h3>
                 <p class="text-muted mb-0">
                   Monitor your spending habits and categorize expenses with our
                   intuitive interface.
@@ -99,8 +112,10 @@
           <div class="col-md-4">
             <div class="card h-100 border-0 shadow-sm">
               <div class="card-body text-center p-4">
-                <i class="bi bi-piggy-bank text-primary display-4 mb-3"></i>
-                <h3 class="h4">Save Money</h3>
+                <div class="p-3 rounded-circle bg-success bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                  <i class="bi bi-piggy-bank fs-2 text-success"></i>
+                </div>
+                <h3 class="h4 fw-bold">Save Money</h3>
                 <p class="text-muted mb-0">
                   Set and achieve your savings goals with our powerful budgeting
                   tools.
@@ -111,8 +126,10 @@
           <div class="col-md-4">
             <div class="card h-100 border-0 shadow-sm">
               <div class="card-body text-center p-4">
-                <i class="bi bi-shield-check text-primary display-4 mb-3"></i>
-                <h3 class="h4">Secure & Private</h3>
+                <div class="p-3 rounded-circle bg-info bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                  <i class="bi bi-shield-check fs-2 text-info"></i>
+                </div>
+                <h3 class="h4 fw-bold">Secure & Private</h3>
                 <p class="text-muted mb-0">
                   Your financial data stays private and secure on your device.
                 </p>
@@ -120,34 +137,36 @@
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="cta py-5">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-8 text-center">
-            <h2 class="mb-4">Ready to Take Control of Your Finances?</h2>
-            <p class="lead mb-4">
-              Join thousands of users who have already transformed their
-              financial future with our budget tracker.
-            </p>
-            <a href="Budget.html" class="btn btn-primary btn-lg"
-              >Get Started Now</a
-            >
+      <section class="cta py-5 mt-4">
+        <div class="card border-0 shadow-sm bg-primary text-white">
+          <div class="card-body p-5">
+            <div class="row justify-content-center">
+              <div class="col-lg-8 text-center">
+                <h2 class="mb-4 fw-bold">Ready to Take Control of Your Finances?</h2>
+                <p class="lead mb-4">
+                  Join thousands of users who have already transformed their
+                  financial future with our budget tracker.
+                </p>
+                <a href="Budget.html" class="btn btn-light btn-lg shadow-sm">
+                  <i class="bi bi-arrow-right-circle me-2"></i>Get Started Now
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
-    <footer class="footer py-4 bg-dark text-white fixed-bottom">
+    <footer class="footer py-4 bg-dark text-white">
       <div class="container text-center">
         <p class="mb-0">© 2024 Budget Tracker. All rights reserved.</p>
       </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/charts.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/charts.js"></script>
   </body>
 </html>

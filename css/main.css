@@ -1,3 +1,130 @@
+/* Add these custom styles to the top of your CSS file */
+
+/* Enhance card appearance */
+.card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 0.5rem;
+}
+
+.card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Improve form controls */
+.form-control, .form-select, .input-group-text {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.375rem;
+}
+
+.form-control:focus, .form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* Style buttons */
+.btn {
+  padding: 0.6rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #b02a37;
+  transform: translateY(-1px);
+}
+
+/* Improve tab styling */
+.nav-tabs .nav-link {
+  color: #6c757d;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.375rem 0.375rem 0 0;
+  transition: all 0.2s;
+}
+
+.nav-tabs .nav-link.active {
+  color: #0d6efd;
+  font-weight: 500;
+  border-bottom-color: #fff;
+  border-top: 2px solid #0d6efd;
+}
+
+.nav-tabs .nav-link:hover:not(.active) {
+  border-color: transparent;
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Enhance expense items */
+.expense-item {
+  transition: all 0.2s;
+}
+
+.expense-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Notification styling */
+.alert {
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  z-index: 1050;
+  max-width: 350px;
+}
+
+/* Animation for expense items */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.expense {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Keep the original CSS below */
 :root {
   --mainWhite: #f5f5f5f5;
   --mainDark: #333333;
@@ -9,6 +136,7 @@
 /* Add padding to the bottom of the body to prevent content from being hidden by the fixed footer */
 body {
   padding-bottom: 80px;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Style for expense items to match the screenshot */
@@ -303,300 +431,4 @@ body {
 
 .expense-item {
   height: 2rem;
-}
-
-/* Remove all dark mode related styles below */
-/* Delete these styles:
-[data-bs-theme="dark"] {
-  --mainWhite: #212529;
-  --mainDark: #f5f5f5;
-}
-
-[data-bs-theme="dark"] .card {
-  background-color: #2b3035;
-  color: #f5f5f5;
-}
-
-[data-bs-theme="dark"] .expense-item {
-  background-color: #2b3035;
-}
-
-[data-bs-theme="dark"] .list-item {
-  color: #f5f5f5;
-}
-
-[data-bs-theme="dark"] .showBlack {
-  color: #f5f5f5;
-}
-
-/* Theme toggle button styles */
-.dropdown-item:active,
-.dropdown-item:focus {
-  outline: none;
-}
-
-.dropdown-item.active {
-  font-weight: 600;
-}
-.card {
-  border: none;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-}
-
-.card-body {
-  padding: 1.5rem !important;
-}
-
-.form-control, .form-select {
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.form-control:focus, .form-select:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-.btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
-  transform: translateY(-1px);
-}
-
-.btn-danger:hover {
-  background-color: #bb2d3b;
-  border-color: #b02a37;
-  transform: translateY(-1px);
-}
-
-.expense-list__info {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.expense-item {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0.5rem;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.expense-title {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.expense-amount {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.expense-icons a {
-  color: #6c757d;
-  transition: color 0.2s;
-}
-
-.expense-icons a:hover {
-  color: #0d6efd;
-}
-.expense-title {
-  font-weight: 500;
-  color: var(--mainDark);
-}
-
-.expense-item .expense-amount {
-  font-weight: 600;
-  color: var(--mainRed);
-}
-
-.budget-form {
-  padding: 1rem;
-  border-radius: 0.25rem;
-}
-
-.expense-form {
-  border: 0.15rem solid var(--mainRed);
-  padding: 1rem;
-  border-radius: 0.25rem;
-}
-
-.budget-submit {
-  background: transparent;
-  border: 0.1rem solid var(--mainGreen);
-  color: var(--mainGreen);
-}
-
-.expense-submit {
-  background: transparent;
-  border: 0.1rem solid var(--mainRed);
-  color: var(--mainRed);
-}
-
-.expense-submit:hover {
-  background: var(--mainRed);
-  color: var(--mainWhite);
-}
-
-.budget-submit:hover {
-  background: var(--mainGreen);
-  color: var(--mainDark);
-}
-
-.budget-input {
-  border: 0.05rem solid var(--mainGreen) !important;
-}
-
-.expense-input {
-  border: 0.05rem solid var(--mainRed) !important;
-}
-
-.expense-amount,
-.expense-title {
-  color: var(--mainRed);
-}
-
-.edit-icon {
-  color: var(--mainBlue);
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none !important;
-}
-
-.delete-icon {
-  color: var(--mainRed);
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none !important;
-}
-
-.edit-icon:hover {
-  color: var(--mainBlue);
-}
-
-.delete-icon:hover {
-  color: var(--mainRed);
-}
-
-.showItem {
-  display: block;
-}
-
-.info-title {
-  font-size: 1.5rem;
-}
-
-.budget {
-  font-size: 1.6rem;
-  color: var(--mainGreen);
-}
-
-.expense {
-  font-size: 1.6rem;
-  color: var(--mainRed);
-}
-
-.balance {
-  font-size: 1.6rem;
-}
-
-.budget-icon,
-.expense-icon,
-.balance-icon {
-  font-size: 2.5rem;
-  color: var(--mainBlue);
-}
-
-.showRed {
-  color: var(--mainRed);
-}
-
-.showGreen {
-  color: var(--mainGreen);
-}
-
-.showBlack {
-  color: var(--mainDark);
-}
-
-@media screen and (min-width: 992px) {
-  .budget {
-    font-size: 2.6rem;
-    color: var(--mainGreen);
-  }
-
-  .expense {
-    font-size: 2.6rem;
-    color: var(--mainRed);
-  }
-
-  .balance {
-    font-size: 2.6rem;
-  }
-
-  .budget-icon,
-  .expense-icon,
-  .balance-icon {
-    font-size: 3.5rem;
-    color: var(--mainGreen);
-  }
-}
-
-.list-item {
-  flex: 0 0 33.33%;
-  text-align: center;
-}
-
-.expense-item {
-  height: 2rem;
-}
-
-/* Remove all dark mode related styles below */
-/* Delete these styles:
-[data-bs-theme="dark"] {
-  --mainWhite: #212529;
-  --mainDark: #f5f5f5;
-}
-
-[data-bs-theme="dark"] .card {
-  background-color: #2b3035;
-  color: #f5f5f5;
-}
-
-[data-bs-theme="dark"] .expense-item {
-  background-color: #2b3035;
-}
-
-[data-bs-theme="dark"] .list-item {
-  color: #f5f5f5;
-}
-
-[data-bs-theme="dark"] .showBlack {
-  color: #f5f5f5;
-}
-
-/* Theme toggle button styles */
-.dropdown-item:active,
-.dropdown-item:focus {
-  outline: none;
-}
-
-.dropdown-item.active {
-  font-weight: 600;
 }
