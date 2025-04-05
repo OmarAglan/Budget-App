@@ -5,13 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Budget Management - Budget Tracker</title>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/main.css" />
   </head>
   <body class="bg-light">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top"
+    >
       <div class="container">
         <a class="navbar-brand fw-bold" href="index.html">
           <i class="bi bi-wallet2"></i> Budget Tracker
@@ -45,7 +53,9 @@
       <!-- Page Title -->
       <div class="row mb-4">
         <div class="col-12">
-          <h2 class="mb-0 fw-bold"><i class="bi bi-calculator"></i> Budget Dashboard</h2>
+          <h2 class="mb-0 fw-bold">
+            <i class="bi bi-calculator"></i> Budget Dashboard
+          </h2>
           <p class="text-muted">Manage your budget and track expenses</p>
         </div>
       </div>
@@ -55,7 +65,16 @@
         <div class="col-md-4 mb-3">
           <div class="card border-0 shadow-sm h-100">
             <div class="card-body text-center">
-              <div class="p-3 rounded-circle bg-primary bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+              <div
+                class="p-3 rounded-circle bg-primary bg-opacity-10 mx-auto mb-3"
+                style="
+                  width: 64px;
+                  height: 64px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
                 <i class="bi bi-wallet2 fs-2 text-primary"></i>
               </div>
               <h6 class="text-muted mb-2">Total Budget</h6>
@@ -66,7 +85,16 @@
         <div class="col-md-4 mb-3">
           <div class="card border-0 shadow-sm h-100">
             <div class="card-body text-center">
-              <div class="p-3 rounded-circle bg-danger bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+              <div
+                class="p-3 rounded-circle bg-danger bg-opacity-10 mx-auto mb-3"
+                style="
+                  width: 64px;
+                  height: 64px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
                 <i class="bi bi-credit-card fs-2 text-danger"></i>
               </div>
               <h6 class="text-muted mb-2">Total Expenses</h6>
@@ -77,7 +105,16 @@
         <div class="col-md-4 mb-3">
           <div class="card border-0 shadow-sm h-100">
             <div class="card-body text-center">
-              <div class="p-3 rounded-circle bg-success bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+              <div
+                class="p-3 rounded-circle bg-success bg-opacity-10 mx-auto mb-3"
+                style="
+                  width: 64px;
+                  height: 64px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
                 <i class="bi bi-piggy-bank fs-2 text-success"></i>
               </div>
               <h6 class="text-muted mb-2">Balance</h6>
@@ -91,7 +128,9 @@
       <div class="row mb-4">
         <div class="col-12">
           <div class="card border-0 shadow-sm">
-            <div class="card-body p-3 d-flex justify-content-between align-items-center">
+            <div
+              class="card-body p-3 d-flex justify-content-between align-items-center"
+            >
               <div>
                 <i class="bi bi-database me-2 text-primary"></i>
                 <span class="fw-medium">Data Management</span>
@@ -103,7 +142,12 @@
                 <button class="btn btn-outline-success" id="import-data">
                   <i class="bi bi-upload"></i> Import Data
                 </button>
-                <input type="file" id="import-file" class="d-none" accept=".json">
+                <input
+                  type="file"
+                  id="import-file"
+                  class="d-none"
+                  accept=".json"
+                />
               </div>
             </div>
           </div>
@@ -114,16 +158,21 @@
       <div class="row">
         <div class="col-lg-4 mb-4">
           <!-- Left side: Budget input and expense form -->
-          <div class="sticky-top" style="top: 80px; z-index: 100;">
+          <div class="sticky-top" style="top: 80px; z-index: 100">
             <!-- Budget Form -->
             <div class="card border-0 shadow-sm mb-4">
               <div class="card-header bg-white py-3 border-0">
-                <h5 class="mb-0"><i class="bi bi-cash-stack text-primary me-2"></i> Budget Input</h5>
+                <h5 class="mb-0">
+                  <i class="bi bi-cash-stack text-primary me-2"></i> Budget
+                  Input
+                </h5>
               </div>
               <div class="card-body p-4">
                 <form id="budget-form">
                   <div class="form-group mb-3">
-                    <label for="budget-input" class="form-label">Enter your total budget</label>
+                    <label for="budget-input" class="form-label"
+                      >Enter your total budget</label
+                    >
                     <div class="input-group">
                       <span class="input-group-text">$</span>
                       <input
@@ -134,7 +183,11 @@
                       />
                     </div>
                   </div>
-                  <button type="button" id="budget-submit" class="btn btn-primary w-100">
+                  <button
+                    type="button"
+                    id="budget-submit"
+                    class="btn btn-primary w-100"
+                  >
                     <i class="bi bi-check-circle me-2"></i> Set Budget
                   </button>
                 </form>
@@ -145,12 +198,16 @@
             <!-- Expense Form -->
             <div class="card border-0 shadow-sm">
               <div class="card-header bg-white py-3 border-0">
-                <h5 class="mb-0"><i class="bi bi-plus-circle text-danger me-2"></i> Add Expense</h5>
+                <h5 class="mb-0">
+                  <i class="bi bi-plus-circle text-danger me-2"></i> Add Expense
+                </h5>
               </div>
               <div class="card-body p-4">
                 <form id="expense-form">
                   <div class="form-group mb-3">
-                    <label for="expense-input" class="form-label">Expense Title</label>
+                    <label for="expense-input" class="form-label"
+                      >Expense Title</label
+                    >
                     <input
                       type="text"
                       class="form-control"
@@ -159,9 +216,13 @@
                     />
                   </div>
                   <div class="form-group mb-3">
-                    <label for="expense-category" class="form-label">Category</label>
+                    <label for="expense-category" class="form-label"
+                      >Category</label
+                    >
                     <select class="form-select" id="expense-category">
-                      <option value="" selected disabled>Select Category</option>
+                      <option value="" selected disabled>
+                        Select Category
+                      </option>
                       <option value="groceries">Groceries</option>
                       <option value="transportation">Transportation</option>
                       <option value="utilities">Utilities</option>
@@ -173,11 +234,7 @@
                   </div>
                   <div class="form-group mb-3">
                     <label for="expense-date" class="form-label">Date</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="expense-date"
-                    />
+                    <input type="date" class="form-control" id="expense-date" />
                   </div>
                   <div class="form-group mb-3">
                     <label for="amount-input" class="form-label">Amount</label>
@@ -191,7 +248,11 @@
                       />
                     </div>
                   </div>
-                  <button type="button" id="expense-submit" class="btn btn-danger w-100">
+                  <button
+                    type="button"
+                    id="expense-submit"
+                    class="btn btn-danger w-100"
+                  >
                     <i class="bi bi-plus-lg me-2"></i> Add Expense
                   </button>
                 </form>
@@ -206,52 +267,90 @@
           <!-- Tabs for charts and list -->
           <ul class="nav nav-tabs mb-4" id="expenseTab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="charts-tab" data-bs-toggle="tab" data-bs-target="#charts" type="button" role="tab" aria-controls="charts" aria-selected="true">
+              <button
+                class="nav-link active"
+                id="charts-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#charts"
+                type="button"
+                role="tab"
+                aria-controls="charts"
+                aria-selected="true"
+              >
                 <i class="bi bi-pie-chart me-2"></i> Charts
               </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="list-tab" data-bs-toggle="tab" data-bs-target="#expensesList" type="button" role="tab" aria-controls="expensesList" aria-selected="false">
+              <button
+                class="nav-link"
+                id="list-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#expensesList"
+                type="button"
+                role="tab"
+                aria-controls="expensesList"
+                aria-selected="false"
+              >
                 <i class="bi bi-list me-2"></i> Expense List
               </button>
             </li>
           </ul>
-          
+
           <div class="tab-content" id="expenseTabContent">
             <!-- Charts Tab -->
-            <div class="tab-pane fade show active" id="charts" role="tabpanel" aria-labelledby="charts-tab">
+            <div
+              class="tab-pane fade show active"
+              id="charts"
+              role="tabpanel"
+              aria-labelledby="charts-tab"
+            >
               <!-- Chart section -->
               <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-white py-3 border-0">
-                  <h5 class="mb-0"><i class="bi bi-pie-chart text-primary me-2"></i> Expense Distribution</h5>
+                  <h5 class="mb-0">
+                    <i class="bi bi-pie-chart text-primary me-2"></i> Expense
+                    Distribution
+                  </h5>
                 </div>
                 <div class="card-body p-4">
-                  <div style="height: 350px;">
+                  <div style="height: 350px">
                     <canvas id="expense-chart"></canvas>
                   </div>
                 </div>
               </div>
-              
+
               <!-- Bar Chart section -->
               <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-white py-3 border-0">
-                  <h5 class="mb-0"><i class="bi bi-bar-chart text-primary me-2"></i> Expense Trends</h5>
+                  <h5 class="mb-0">
+                    <i class="bi bi-bar-chart text-primary me-2"></i> Expense
+                    Trends
+                  </h5>
                 </div>
                 <div class="card-body p-4">
-                  <div style="height: 300px;">
+                  <div style="height: 300px">
                     <canvas id="expense-trend-chart"></canvas>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <!-- Expense List Tab -->
-            <div class="tab-pane fade" id="expensesList" role="tabpanel" aria-labelledby="list-tab">
+            <div
+              class="tab-pane fade"
+              id="expensesList"
+              role="tabpanel"
+              aria-labelledby="list-tab"
+            >
               <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                <div
+                  class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center"
+                >
                   <h5 class="mb-0">
                     <i class="bi bi-receipt text-primary me-2"></i> Expense List
-                    <span class="badge bg-primary ms-2" id="expense-count">0</span>
+                    <span class="badge bg-primary ms-2" id="expense-count"
+                      >0</span
+                    >
                   </h5>
                 </div>
                 <div class="card-body p-4">
@@ -262,12 +361,12 @@
                         <span class="input-group-text bg-light border-end-0">
                           <i class="bi bi-search text-muted"></i>
                         </span>
-                        <input 
-                          type="text" 
-                          class="form-control border-start-0 bg-light" 
-                          id="expense-search" 
+                        <input
+                          type="text"
+                          class="form-control border-start-0 bg-light"
+                          id="expense-search"
                           placeholder="Search expenses..."
-                        >
+                        />
                       </div>
                     </div>
                     <div class="col-md-4 mb-3 mb-md-0">
@@ -292,20 +391,27 @@
                       </select>
                     </div>
                   </div>
-                  
+
                   <div class="expense-list" id="expense-list">
-                    <div class="expense-list__info d-flex justify-content-between text-capitalize border-bottom pb-2 mb-3">
+                    <div
+                      class="expense-list__info d-flex justify-content-between text-capitalize border-bottom pb-2 mb-3"
+                    >
                       <h6 class="list-item fw-bold">Expense Title</h6>
                       <h6 class="list-item fw-bold text-center">Amount</h6>
                       <h6 class="list-item fw-bold text-end">Actions</h6>
                     </div>
-                    
+
                     <!-- No expenses message -->
-                    <div id="no-expenses-message" class="text-center py-4 d-none">
+                    <div
+                      id="no-expenses-message"
+                      class="text-center py-4 d-none"
+                    >
                       <div class="py-5">
                         <i class="bi bi-receipt text-muted display-1 mb-3"></i>
                         <p class="text-muted mb-0">No expenses found.</p>
-                        <p class="text-muted">Add your first expense using the form.</p>
+                        <p class="text-muted">
+                          Add your first expense using the form.
+                        </p>
                       </div>
                     </div>
                     <!-- Expense items will be added dynamically -->
@@ -330,219 +436,5 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/app.js"></script>
-    <script>
-      // Debug script to test budget functionality
-      document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM fully loaded');
-        
-        // Log UI elements to verify they're found
-        const budgetInput = document.getElementById('budget-input');
-        const budgetSubmitBtn = document.getElementById('budget-submit');
-        const budgetAmount = document.getElementById('budget-amount');
-        
-        console.log('Budget Input found:', !!budgetInput);
-        console.log('Budget Submit button found:', !!budgetSubmitBtn);
-        console.log('Budget Amount element found:', !!budgetAmount);
-        
-        // Direct event handler approach
-        if (budgetSubmitBtn) {
-          console.log('Adding click event to budget submit button');
-          
-          budgetSubmitBtn.addEventListener('click', function() {
-            console.log('Budget button clicked');
-            
-            // Get input value directly
-            const value = budgetInput.value;
-            console.log('Budget input value:', value);
-            
-            if (value === '' || parseFloat(value) <= 0) {
-              console.log('Invalid budget value');
-              alert('Budget value cannot be empty or negative');
-            } else {
-              // Format the number
-              const formattedValue = parseFloat(value).toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              });
-              
-              console.log('Setting budget to:', formattedValue);
-              
-              // Set the budget amount
-              budgetAmount.textContent = formattedValue;
-              
-              // Clear input
-              budgetInput.value = '';
-              
-              // Save to localStorage
-              localStorage.setItem('budget', formattedValue);
-              
-              // Update the balance
-              const expenseAmount = document.getElementById('expense-amount').textContent;
-              const expenseValue = parseFloat(expenseAmount.replace(/,/g, '')) || 0;
-              const balanceValue = parseFloat(value) - expenseValue;
-              
-              // Format and display balance
-              const formattedBalance = balanceValue.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              });
-              
-              document.getElementById('balance-amount').textContent = formattedBalance;
-              
-              // Show notification
-              alert('Budget set successfully!');
-              
-              console.log('Budget update complete');
-            }
-          });
-        }
-        
-        // Direct expense form handling
-        const expenseForm = document.getElementById('expense-form');
-        const expenseSubmitBtn = document.getElementById('expense-submit');
-        
-        // Get expense form elements
-        const expenseInput = document.getElementById('expense-input');
-        const expenseCategory = document.getElementById('expense-category');
-        const expenseDate = document.getElementById('expense-date');
-        const amountInput = document.getElementById('amount-input');
-        const expenseFeedback = document.querySelector('.expense-feedback');
-        const expenseList = document.getElementById('expense-list');
-        const expenseCount = document.getElementById('expense-count');
-        const noExpensesMessage = document.getElementById('no-expenses-message');
-        
-        console.log('Expense input found:', !!expenseInput);
-        console.log('Expense category found:', !!expenseCategory);
-        console.log('Expense date found:', !!expenseDate);
-        console.log('Amount input found:', !!amountInput);
-        console.log('Expense submit button found:', !!expenseSubmitBtn);
-        
-        if (expenseSubmitBtn) {
-          console.log('Adding click event to expense submit button');
-          
-          expenseSubmitBtn.addEventListener('click', function(e) {
-            console.log('Expense button clicked');
-            e.preventDefault();
-            
-            // Get expense values
-            const expenseValue = expenseInput.value;
-            const categoryValue = expenseCategory.value;
-            const dateValue = expenseDate.value;
-            const amountValue = amountInput.value;
-            
-            console.log('Expense data:', {
-              title: expenseValue,
-              category: categoryValue,
-              date: dateValue,
-              amount: amountValue
-            });
-            
-            // Validate inputs
-            if (
-              expenseValue === '' ||
-              amountValue === '' ||
-              parseFloat(amountValue) <= 0 ||
-              categoryValue === '' ||
-              categoryValue === null ||
-              dateValue === ''
-            ) {
-              console.log('Invalid expense data');
-              alert('All fields are required and amount cannot be negative');
-              return;
-            }
-            
-            try {
-              // Get existing expenses from localStorage
-              let expenses = [];
-              let itemID = 0;
-              
-              if (localStorage.getItem('expenses')) {
-                expenses = JSON.parse(localStorage.getItem('expenses'));
-              }
-              
-              if (localStorage.getItem('itemID')) {
-                itemID = parseInt(localStorage.getItem('itemID'));
-              }
-              
-              // Create new expense object
-              const expense = {
-                id: itemID,
-                title: expenseValue,
-                amount: parseFloat(amountValue),
-                category: categoryValue,
-                date: dateValue
-              };
-              
-              // Increment ID for next expense
-              itemID++;
-              
-              // Add to expenses array
-              expenses.push(expense);
-              
-              // Save to localStorage
-              localStorage.setItem('expenses', JSON.stringify(expenses));
-              localStorage.setItem('itemID', itemID.toString());
-              
-              // Clear form fields
-              expenseInput.value = '';
-              amountInput.value = '';
-              expenseCategory.value = '';
-              
-              // Reset date to today
-              const today = new Date().toISOString().split('T')[0];
-              expenseDate.value = today;
-              
-              // Update expense count
-              if (expenseCount) {
-                expenseCount.textContent = expenses.length;
-              }
-              
-              // Hide no expenses message if it exists
-              if (noExpensesMessage) {
-                noExpensesMessage.classList.add('d-none');
-              }
-              
-              // Calculate new total expense
-              let total = 0;
-              if (expenses.length > 0) {
-                total = expenses.reduce((acc, curr) => {
-                  acc += curr.amount;
-                  return acc;
-                }, 0);
-              }
-              
-              // Format and update expense amount
-              const formattedTotal = total.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              });
-              document.getElementById('expense-amount').textContent = formattedTotal;
-              
-              // Update balance
-              const budgetValue = parseFloat(budgetAmount.textContent.replace(/,/g, '')) || 0;
-              const balanceValue = budgetValue - total;
-              
-              // Format and display balance
-              const formattedBalance = balanceValue.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              });
-              document.getElementById('balance-amount').textContent = formattedBalance;
-              
-              // Show notification
-              alert('Expense added successfully!');
-              
-              // Refresh the page to update the expense list and charts
-              window.location.reload();
-              
-              console.log('Expense added successfully');
-            } catch (error) {
-              console.error('Error adding expense:', error);
-              alert('Error adding expense: ' + error.message);
-            }
-          });
-        }
-      });
-    </script>
   </body>
 </html>

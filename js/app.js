@@ -4,35 +4,46 @@ class UI {
    */
   constructor() {
     console.log('UI constructor called');
-    
+
     // Budget elements
     this.budgetFeedback = document.querySelector('.budget-feedback');
     this.budgetForm = document.getElementById('budget-form');
     this.budgetInput = document.getElementById('budget-input');
     this.budgetAmount = document.getElementById('budget-amount');
-    
+    this.budgetSubmitBtn = document.getElementById('budget-submit');
+
     // Check if budget elements exist
     if (!this.budgetInput) console.error('Budget input element not found');
     if (!this.budgetAmount) console.error('Budget amount element not found');
-    
+    if (!this.budgetSubmitBtn) console.error('Budget submit button not found');
+
     // Balance elements
     this.expenseAmount = document.getElementById('expense-amount');
     this.balance = document.getElementById('balance');
     this.balanceAmount = document.getElementById('balance-amount');
-    
+
     // Expense form elements
     this.expenseFeedback = document.querySelector('.expense-feedback');
     this.expenseForm = document.getElementById('expense-form');
     this.expenseInput = document.getElementById('expense-input');
     this.amountInput = document.getElementById('amount-input');
+    this.expenseCategory = document.getElementById('expense-category');
     this.expenseDate = document.getElementById('expense-date');
+    this.expenseSubmitBtn = document.getElementById('expense-submit');
     this.expenseList = document.getElementById('expense-list');
     this.expenseCount = document.getElementById('expense-count');
     this.noExpensesMessage = document.getElementById('no-expenses-message');
     this.expenseSearch = document.getElementById('expense-search');
     this.filterCategory = document.getElementById('filter-category');
     this.filterPeriod = document.getElementById('filter-period');
-    
+
+    // Check expense elements
+    if (!this.expenseInput) console.error('Expense input element not found');
+    if (!this.amountInput) console.error('Amount input element not found');
+    if (!this.expenseCategory) console.error('Expense category element not found');
+    if (!this.expenseDate) console.error('Expense date element not found');
+    if (!this.expenseSubmitBtn) console.error('Expense submit button not found');
+
     this.itemList = [];
     this.filteredList = [];
     this.itemID = 0;
@@ -46,15 +57,15 @@ class UI {
     console.log('Trying to initialize charts');
     // Initialize charts - wrap in try/catch to handle potential errors
     try {
-      if (typeof initializeCharts === 'function') {
-        initializeCharts();
-        if (typeof initializeBarChart === 'function') {
-          initializeBarChart();
-        } else {
-          console.warn('initializeBarChart function not found');
-        }
+      if (typeof initializeExpenseChart === 'function') {
+        initializeExpenseChart();
       } else {
-        console.warn('initializeCharts function not found');
+        console.warn('initializeExpenseChart function not found');
+      }
+      if (typeof initializeTrendChart === 'function') {
+        initializeTrendChart();
+      } else {
+        console.warn('initializeTrendChart function not found');
       }
     } catch (error) {
       console.error('Error initializing charts:', error);
@@ -62,61 +73,53 @@ class UI {
 
     // Load data from localStorage
     this.loadFromLocalStorage();
-    
-    // Set up filter event listeners
-    this.setupFilterListeners();
-    
+
     console.log('UI constructor completed');
   }
 
-  // Set up event listeners for filters
-  setupFilterListeners() {
-    if (this.expenseSearch) {
-      this.expenseSearch.addEventListener('input', () => this.filterExpenses());
-    }
-    
-    if (this.filterCategory) {
-      this.filterCategory.addEventListener('change', () => this.filterExpenses());
-    }
-    
-    if (this.filterPeriod) {
-      this.filterPeriod.addEventListener('change', () => this.filterExpenses());
-    }
-  }
-  
-  // Filter expenses based on search and filter values
   filterExpenses() {
+    console.log('Filtering expenses...');
     // Get filter values
-    const searchTerm = this.expenseSearch ? this.expenseSearch.value.toLowerCase() : '';
-    const categoryFilter = this.filterCategory ? this.filterCategory.value : 'all';
+    const searchTerm = this.expenseSearch
+      ? this.expenseSearch.value.toLowerCase()
+      : '';
+    const categoryFilter = this.filterCategory
+      ? this.filterCategory.value
+      : 'all';
     const periodFilter = this.filterPeriod ? this.filterPeriod.value : 'all';
-    
+
     // Filter expenses
-    this.filteredList = this.itemList.filter(expense => {
+    this.filteredList = this.itemList.filter((expense) => {
       // Check search term
-      const matchesSearch = searchTerm === '' || 
-        expense.title.toLowerCase().includes(searchTerm) || 
+      const matchesSearch =
+        searchTerm === '' ||
+        expense.title.toLowerCase().includes(searchTerm) ||
         expense.category.toLowerCase().includes(searchTerm);
-      
+
       // Check category
-      const matchesCategory = categoryFilter === 'all' || expense.category === categoryFilter;
-      
+      const matchesCategory =
+        categoryFilter === 'all' || expense.category === categoryFilter;
+
       // Check date period
       let matchesPeriod = true;
       if (periodFilter !== 'all' && expense.date) {
         const expenseDate = new Date(expense.date);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        
+
         const thisWeekStart = new Date(today);
         thisWeekStart.setDate(today.getDate() - today.getDay()); // Start of week (Sunday)
-        
-        const thisMonthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-        
+
+        const thisMonthStart = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          1
+        );
+
         const threeMonthsAgo = new Date(today);
         threeMonthsAgo.setMonth(today.getMonth() - 3);
-        
-        switch(periodFilter) {
+
+        switch (periodFilter) {
           case 'today':
             matchesPeriod = expenseDate.toDateString() === today.toDateString();
             break;
@@ -131,149 +134,125 @@ class UI {
             break;
         }
       }
-      
+
       return matchesSearch && matchesCategory && matchesPeriod;
     });
-    
+
+    console.log(`Filtered list count: ${this.filteredList.length}`);
     // Update UI with filtered expenses
     this.updateExpenseList();
+
+    // Update charts with filtered data
+    if (typeof updateExpenseChart === 'function') {
+        updateExpenseChart(this.filteredList);
+        if (typeof updateExpenseTrendChart === 'function') {
+            updateExpenseTrendChart(this.filteredList);
+        }
+    }
   }
-  
-  // Update the expense list display with filtered expenses
+
   updateExpenseList() {
     // Clear current expense list (except header)
     const expenseHeader = this.expenseList.querySelector('.expense-list__info');
     this.expenseList.innerHTML = '';
-    this.expenseList.appendChild(expenseHeader);
-    
-    // Add "no expenses" message
-    if (this.noExpensesMessage) {
-      if (this.filteredList.length === 0) {
+    if (expenseHeader) {
+        this.expenseList.appendChild(expenseHeader);
+    }
+
+    // Remove any existing no results message before checking lengths
+    const existingNoResults = document.getElementById('no-results-message');
+    if (existingNoResults) {
+        existingNoResults.remove();
+    }
+
+    // Handle "no expenses at all" vs "no expenses match filter"
+    if (this.itemList.length === 0 && this.noExpensesMessage) {
+        // Show the initial "No expenses found" message if the main list is empty
         this.noExpensesMessage.classList.remove('d-none');
         this.expenseList.appendChild(this.noExpensesMessage);
-      } else {
-        this.noExpensesMessage.classList.add('d-none');
-      }
+    } else if (this.filteredList.length === 0) {
+        // Show the "No expenses match your filters" message
+        if (this.noExpensesMessage) this.noExpensesMessage.classList.add('d-none');
+
+        const noResultsMsg = document.createElement('div');
+        noResultsMsg.id = 'no-results-message';
+        noResultsMsg.className = 'text-center py-4';
+        noResultsMsg.innerHTML = `
+          <div class="py-5">
+            <i class="bi bi-search text-muted display-1 mb-3"></i>
+            <p class="text-muted mb-0">No expenses match your filters.</p>
+            <p class="text-muted">Try adjusting your search criteria.</p>
+          </div>
+        `;
+        this.expenseList.appendChild(noResultsMsg);
+
+    } else {
+        // Hide the initial "No expenses found" message if there are filtered results
+        if (this.noExpensesMessage) this.noExpensesMessage.classList.add('d-none');
+        // Add filtered expenses to list
+        this.filteredList.forEach((expense) => {
+          this.addExpenseToDOM(expense);
+        });
     }
-    
-    // Update expense count
+
+    // Update expense count based on filtered list
     if (this.expenseCount) {
       this.expenseCount.textContent = this.filteredList.length;
     }
-    
-    // Add filtered expenses to list
-    this.filteredList.forEach(expense => {
-      this.addExpenseToDOM(expense);
-    });
-  }
-  
-  // Add expense to DOM (separate from addExpense to support filtering)
-  addExpenseToDOM(expense) {
-    const categoryColors = {
-      groceries: 'success',
-      transportation: 'info',
-      utilities: 'warning',
-      entertainment: 'primary',
-      healthcare: 'danger',
-      shopping: 'secondary',
-      other: 'dark'
-    };
-    
-    const categoryIcons = {
-      groceries: 'cart',
-      transportation: 'car-front',
-      utilities: 'lightning',
-      entertainment: 'film',
-      healthcare: 'heart-pulse',
-      shopping: 'bag',
-      other: 'three-dots'
-    };
-    
-    // Format date for display
-    const dateObj = new Date(expense.date);
-    const formattedDate = dateObj.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
-
-    const div = document.createElement('div');
-    div.classList.add('expense');
-    div.innerHTML = `
-      <div class="expense-item rounded p-3 mb-3 border-start border-${categoryColors[expense.category]} border-3 bg-white shadow-sm">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center flex-grow-1">
-            <div class="me-3">
-              <span class="badge bg-${categoryColors[expense.category]} bg-opacity-10 text-${categoryColors[expense.category]} p-2">
-                <i class="bi bi-${categoryIcons[expense.category]}"></i>
-              </span>
-            </div>
-            <div>
-              <h6 class="expense-title mb-1 text-capitalize fw-semibold">
-                ${expense.title}
-              </h6>
-              <div class="text-muted small">
-                <span class="me-2"><i class="bi bi-tag"></i> ${expense.category}</span>
-                <span><i class="bi bi-calendar"></i> ${formattedDate}</span>
-              </div>
-            </div>
-          </div>
-          <div class="text-end">
-            <h6 class="expense-amount mb-1 fw-bold text-danger">$${this.formatNumber(expense.amount)}</h6>
-            <div class="expense-icons">
-              <button class="btn btn-sm btn-outline-primary edit-icon me-1" data-id="${expense.id}">
-                <i class="bi bi-pencil-square"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-icon" data-id="${expense.id}">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-    
-    // Attach event listeners to the buttons
-    const editBtn = div.querySelector('.edit-icon');
-    const deleteBtn = div.querySelector('.delete-icon');
-    
-    editBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.editExpense(editBtn);
-    });
-    
-    deleteBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.deleteExpense(deleteBtn);
-    });
-    
-    this.expenseList.appendChild(div);
   }
 
   loadFromLocalStorage() {
+    console.log('Loading data from localStorage');
     const budget = localStorage.getItem('budget');
     const expenses = localStorage.getItem('expenses');
     const itemID = localStorage.getItem('itemID');
 
     if (budget) {
-      this.budgetAmount.textContent = budget;
+      console.log(`Loaded budget: ${budget}`);
+    } else {
+      console.log('No budget found in localStorage');
     }
 
     if (expenses) {
-      this.itemList = JSON.parse(expenses);
-      this.filteredList = [...this.itemList]; // Initialize filtered list with all expenses
-      this.updateExpenseList(); // Display expenses with new method
+      try {
+          this.itemList = JSON.parse(expenses);
+          this.filteredList = [...this.itemList];
+          console.log(`Loaded ${this.itemList.length} expenses`);
+      } catch (e) {
+          console.error("Error parsing expenses from localStorage:", e);
+          this.itemList = [];
+          this.filteredList = [];
+          localStorage.removeItem('expenses');
+      }
+    } else {
+        console.log('No expenses found in localStorage');
+        this.itemList = [];
+        this.filteredList = [];
     }
 
     if (itemID) {
-      this.itemID = parseInt(itemID);
+        try {
+            this.itemID = parseInt(itemID);
+            console.log(`Loaded itemID: ${this.itemID}`);
+        } catch (e) {
+            console.error("Error parsing itemID from localStorage:", e);
+            this.itemID = this.itemList.length > 0 ? Math.max(...this.itemList.map(item => item.id)) + 1 : 0;
+            localStorage.setItem('itemID', this.itemID.toString());
+        }
+    } else {
+        this.itemID = this.itemList.length > 0 ? Math.max(...this.itemList.map(item => item.id)) + 1 : 0;
+        console.log(`Calculated initial itemID: ${this.itemID}`);
     }
 
     this.showBalance();
+    this.updateExpenseList();
+    this.updateCharts();
   }
 
   saveToLocalStorage() {
-    localStorage.setItem('budget', this.budgetAmount.textContent);
+    console.log('Saving data to localStorage');
+    const budgetValue = parseFloat(localStorage.getItem('budget_raw') || '0');
+    localStorage.setItem('budget_raw', budgetValue.toString());
     localStorage.setItem('expenses', JSON.stringify(this.itemList));
     localStorage.setItem('itemID', this.itemID.toString());
   }
@@ -281,25 +260,23 @@ class UI {
   submitBudgetForm() {
     console.log('submitBudgetForm method called');
     const value = this.budgetInput.value;
+    const budgetValue = parseFloat(value);
     console.log('Budget input value:', value);
-    
+
     try {
-      if (value === '' || parseFloat(value) <= 0) {
+      if (value === '' || isNaN(budgetValue) || budgetValue < 0) {
         console.log('Invalid budget value');
         this.budgetFeedback.classList.add('showItem');
-        this.budgetFeedback.innerHTML = `<p>Value cannot be empty or negative</p>`;
-        const self = this;
-        setTimeout(function () {
-          self.budgetFeedback.classList.remove('showItem');
+        this.budgetFeedback.innerHTML = `<p>Value cannot be empty or negative.</p>`;
+        setTimeout(() => {
+          this.budgetFeedback.classList.remove('showItem');
         }, 3000);
       } else {
-        console.log('Setting budget to:', parseFloat(value));
-        this.budgetAmount.textContent = this.formatNumber(parseFloat(value));
+        console.log('Setting budget to:', budgetValue);
+        localStorage.setItem('budget_raw', budgetValue.toString());
         this.budgetInput.value = '';
         this.showBalance();
         this.saveToLocalStorage();
-        
-        // Show success notification
         this.showNotification('Budget set successfully!', 'success');
         console.log('Budget updated successfully');
       }
@@ -315,86 +292,64 @@ class UI {
 
   showBalance() {
     console.log('Updating balance display');
-    
-    // Get budget and expenses from localStorage
-    const budget = localStorage.getItem('budget');
-    const expenses = JSON.parse(localStorage.getItem('expenses') || '[]');
-    
-    // Calculate total expense
-    let totalExpense = 0;
-    if (expenses.length > 0) {
-      totalExpense = expenses.reduce((acc, curr) => {
-        return acc + parseFloat(curr.amount);
-      }, 0);
-    }
-    
-    // Format values for display
-    const budgetValue = parseFloat(budget) || 0;
-    const formattedBudget = budgetValue.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-    
-    const formattedExpense = totalExpense.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-    
-    const balance = budgetValue - totalExpense;
-    const formattedBalance = balance.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-    
-    // Update DOM elements
+    const rawBudget = parseFloat(localStorage.getItem('budget_raw') || '0');
+    const totalExpense = this.itemList.reduce((acc, curr) => {
+        return acc + (parseFloat(curr.amount) || 0);
+    }, 0);
+    const balance = rawBudget - totalExpense;
+
     if (this.budgetAmount) {
-      this.budgetAmount.textContent = formattedBudget;
+        this.budgetAmount.textContent = this.formatNumber(rawBudget);
     }
-    
+
     if (this.expenseAmount) {
-      this.expenseAmount.textContent = formattedExpense;
+        this.expenseAmount.textContent = this.formatNumber(totalExpense);
     }
-    
+
     if (this.balanceAmount) {
-      this.balanceAmount.textContent = formattedBalance;
-      
-      // Add color classes based on balance
-      this.balanceAmount.classList.remove('text-success', 'text-danger');
-      if (balance > 0) {
-        this.balanceAmount.classList.add('text-success');
-      } else if (balance < 0) {
-        this.balanceAmount.classList.add('text-danger');
-      }
+        this.balanceAmount.textContent = this.formatNumber(balance);
+        this.balanceAmount.classList.remove('text-success', 'text-danger', 'text-muted');
+        if (balance > 0) {
+            this.balanceAmount.classList.add('text-success');
+        } else if (balance < 0) {
+            this.balanceAmount.classList.add('text-danger');
+        } else {
+            this.balanceAmount.classList.add('text-muted');
+        }
     }
-    
-    console.log(`Balance updated: Budget $${formattedBudget}, Expenses $${formattedExpense}, Balance $${formattedBalance}`);
+
+    console.log(
+      `Balance updated: Budget $${this.formatNumber(rawBudget)}, Expenses $${this.formatNumber(totalExpense)}, Balance $${this.formatNumber(balance)}`
+    );
   }
 
   submitExpenseForm() {
-    const expenseValue = this.expenseInput.value;
+    console.log('submitExpenseForm called');
+    const expenseValue = this.expenseInput.value.trim();
     const amountValue = this.amountInput.value;
-    const categoryValue = document.getElementById('expense-category').value;
+    const categoryValue = this.expenseCategory.value;
     const dateValue = this.expenseDate.value;
+    const amount = parseFloat(amountValue);
 
     if (
       expenseValue === '' ||
       amountValue === '' ||
-      amountValue <= 0 ||
+      isNaN(amount) ||
+      amount <= 0 ||
       categoryValue === '' ||
       dateValue === ''
     ) {
-      this.expenseFeedback.classList.add('showItem');
-      this.expenseFeedback.innerHTML = `<p>All fields are required and amount cannot be negative</p>`;
-      const self = this;
-      setTimeout(function () {
-        self.expenseFeedback.classList.remove('showItem');
-      }, 3000);
+        console.log('Invalid expense data');
+        this.expenseFeedback.classList.add('showItem');
+        this.expenseFeedback.innerHTML = `<p>All fields are required. Amount must be positive.</p>`;
+        setTimeout(() => {
+            this.expenseFeedback.classList.remove('showItem');
+        }, 3000);
     } else {
-      let amount = parseFloat(amountValue);
+      console.log('Valid expense data, adding expense');
       this.expenseInput.value = '';
       this.amountInput.value = '';
-      document.getElementById('expense-category').value = '';
-      // Reset date to today
+      this.expenseCategory.value = '';
       const today = new Date().toISOString().split('T')[0];
       this.expenseDate.value = today;
 
@@ -406,25 +361,22 @@ class UI {
         date: dateValue
       };
       this.itemID++;
-      
-      // Add expense directly to itemList
+
       this.itemList.push(expense);
-      
-      // Update UI and filter (but don't add the expense again)
+      console.log(`Expense added: ${JSON.stringify(expense)}, New item count: ${this.itemList.length}`);
+
       this.filterExpenses();
-      
-      // Update the balance and save to localStorage
+
       this.showBalance();
       this.saveToLocalStorage();
-      
-      // Update charts with new expense
-      updateExpenseChart(this.itemList);
-      updateExpenseTrendChart(this.itemList);
+
+      this.updateCharts();
+
+      this.showNotification('Expense added successfully!', 'success');
     }
   }
 
-  addExpense(expense) {
-    // Define category colors and icons for consistent styling
+  addExpenseToDOM(expense) {
     const categoryColors = {
       groceries: 'success',
       transportation: 'info',
@@ -434,7 +386,7 @@ class UI {
       shopping: 'secondary',
       other: 'dark'
     };
-    
+
     const categoryIcons = {
       groceries: 'cart',
       transportation: 'car-front',
@@ -444,59 +396,57 @@ class UI {
       shopping: 'bag',
       other: 'three-dots'
     };
-    
-    // Format date for display
+
     const dateObj = new Date(expense.date);
     const formattedDate = dateObj.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
     });
-    
-    // Format amount
+
     const formattedAmount = expense.amount.toLocaleString('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
-    
-    // Create the expense element with the new structure that matches our CSS
+
     const div = document.createElement('div');
-    div.className = 'expense-item-container mb-3';
+    div.classList.add('expense');
     div.innerHTML = `
-      <div class="expense-item rounded p-3 border-start border-${categoryColors[expense.category]} border-3 bg-white shadow-sm">
-        <div class="row align-items-center">
-          <!-- Title and meta info column - 6 columns -->
-          <div class="col-6 col-md-6">
-            <div class="d-flex align-items-center">
-              <div class="me-3">
-                <span class="badge bg-${categoryColors[expense.category]} bg-opacity-10 text-${categoryColors[expense.category]} p-2">
-                  <i class="bi bi-${categoryIcons[expense.category]}"></i>
-                </span>
-              </div>
-              <div class="expense-details">
-                <h6 class="expense-title mb-1 text-capitalize fw-semibold">
-                  ${expense.title}
-                </h6>
-                <div class="text-muted small">
-                  <span class="me-2"><i class="bi bi-tag"></i> ${expense.category}</span>
-                  <span><i class="bi bi-calendar"></i> ${formattedDate}</span>
-                </div>
+      <div class="expense-item rounded p-3 mb-3 border-start border-${
+        categoryColors[expense.category]
+      } border-3 bg-white shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center flex-grow-1">
+            <div class="me-3">
+              <span class="badge bg-${
+                categoryColors[expense.category]
+              } bg-opacity-10 text-${categoryColors[expense.category]} p-2">
+                <i class="bi bi-${categoryIcons[expense.category]}"></i>
+              </span>
+            </div>
+            <div>
+              <h6 class="expense-title mb-1 text-capitalize fw-semibold">
+                ${expense.title}
+              </h6>
+              <div class="text-muted small">
+                <span class="me-2"><i class="bi bi-tag"></i> ${
+                  expense.category
+                }</span>
+                <span><i class="bi bi-calendar"></i> ${formattedDate}</span>
               </div>
             </div>
           </div>
-          
-          <!-- Amount column - 3 columns -->
-          <div class="col-3 col-md-3 text-center">
-            <h6 class="expense-amount mb-0 fw-bold text-danger">$${formattedAmount}</h6>
-          </div>
-          
-          <!-- Actions column - 3 columns -->
-          <div class="col-3 col-md-3 text-end">
-            <div class="expense-actions">
-              <button class="btn btn-sm btn-outline-primary edit-expense me-1" data-id="${expense.id}">
+          <div class="text-end">
+            <h6 class="expense-amount mb-1 fw-bold text-danger">$${formattedAmount}</h6>
+            <div class="expense-icons">
+              <button class="btn btn-sm btn-outline-primary edit-icon me-1" data-id="${
+                expense.id
+              }">
                 <i class="bi bi-pencil-square"></i>
               </button>
-              <button class="btn btn-sm btn-outline-danger delete-expense" data-id="${expense.id}">
+              <button class="btn btn-sm btn-outline-danger delete-icon" data-id="${
+                expense.id
+              }">
                 <i class="bi bi-trash"></i>
               </button>
             </div>
@@ -504,213 +454,220 @@ class UI {
         </div>
       </div>
     `;
-    
-    // Get the expense list
-    const expenseList = document.getElementById('expense-list');
-    
-    if (expenseList) {
-      // Add event listeners to edit and delete buttons
-      const editBtn = div.querySelector('.edit-expense');
-      const deleteBtn = div.querySelector('.delete-expense');
-      
-      if (editBtn) {
-        editBtn.addEventListener('click', () => {
-          this.editExpense(event);
-        });
-      }
-      
-      if (deleteBtn) {
-        deleteBtn.addEventListener('click', () => {
-          this.deleteExpense(event);
-        });
-      }
-      
-      // Hide any no expenses message
-      const noExpensesMessage = document.getElementById('no-expenses-message');
-      if (noExpensesMessage) {
-        noExpensesMessage.style.display = 'none';
-      }
-      
-      // Add to expense list
-      expenseList.appendChild(div);
-      
-      // Update expense count if element exists
-      if (this.expenseCount) {
-        const expenses = JSON.parse(localStorage.getItem('expenses') || '[]');
-        this.expenseCount.textContent = expenses.length;
-      }
-    }
-  }
 
-  totalExpense() {
-    let total = 0;
-    if (this.itemList.length > 0) {
-      total = this.itemList.reduce((acc, curr) => {
-        acc += curr.amount;
-        return acc;
-      }, 0);
-    }
-    this.expenseAmount.textContent = this.formatNumber(total);
-    return total;
+    const editBtn = div.querySelector('.edit-icon');
+    const deleteBtn = div.querySelector('.delete-icon');
+
+    editBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.editExpense(editBtn);
+    });
+
+    deleteBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.deleteExpense(deleteBtn);
+    });
+
+    this.expenseList.appendChild(div);
   }
 
   formatNumber(number) {
-    return number.toLocaleString('en-US', {
+    const num = parseFloat(number);
+    if (isNaN(num)) {
+        return (0).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+    }
+    return num.toLocaleString('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
   }
 
   editExpense(element) {
-    let id = parseInt(element.dataset.id);
-    // Find the expense container (now we need to go up more levels due to new structure)
+    console.log('editExpense called');
+    let id;
+    if (element.tagName === 'I') {
+        id = parseInt(element.parentElement.dataset.id);
+    } else {
+        id = parseInt(element.dataset.id);
+    }
+    console.log(`Editing expense with ID: ${id}`);
+
     let expenseContainer = element.closest('.expense');
-    
-    if (expenseContainer) {
-      this.expenseList.removeChild(expenseContainer);
-      
-      let expense = this.itemList.filter((item) => item.id === id);
-      if (expense.length > 0) {
-        this.expenseInput.value = expense[0].title;
-        this.amountInput.value = expense[0].amount;
-        document.getElementById('expense-category').value = expense[0].category;
-        if (expense[0].date) {
-          this.expenseDate.value = expense[0].date;
-        }
-        
-        // Show expense form tab if we're in the list tab
-        const listTab = document.getElementById('list-tab');
-        const formElement = document.getElementById('expense-form').closest('.col-lg-4');
-        if (listTab && listTab.classList.contains('active') && window.innerWidth < 992) {
-          // Scroll to the form on mobile
-          formElement.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        let tempList = this.itemList.filter((item) => item.id !== id);
-        this.itemList = tempList;
-        this.showBalance();
-        this.saveToLocalStorage();
-        updateExpenseChart(this.itemList);
-        updateExpenseTrendChart(this.itemList);
-        
-        // Update filtered list and UI
-        this.filterExpenses();
+    if (!expenseContainer) {
+        console.error("Could not find expense container for edit.");
+        return;
+    }
+
+    let expense = this.itemList.find((item) => item.id === id);
+
+    if (expense) {
+      this.expenseInput.value = expense.title;
+      this.amountInput.value = expense.amount;
+      this.expenseCategory.value = expense.category;
+      if (expense.date) {
+        this.expenseDate.value = expense.date;
       }
+
+      this.itemList = this.itemList.filter((item) => item.id !== id);
+      console.log(`Removed expense ${id} for editing. Item count: ${this.itemList.length}`);
+
+      this.filterExpenses();
+
+      this.showBalance();
+      this.updateCharts();
+      this.saveToLocalStorage();
+
+      if (this.expenseForm) {
+          this.expenseForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          this.expenseInput.focus();
+      }
+    } else {
+        console.error(`Expense with ID ${id} not found in itemList.`);
     }
   }
 
   deleteExpense(element) {
-    let id = parseInt(element.dataset.id);
-    // Find the expense container
-    let expenseContainer = element.closest('.expense');
-    
-    if (expenseContainer) {
-      // Animate the removal
-      expenseContainer.style.transition = 'all 0.3s ease';
-      expenseContainer.style.opacity = '0';
-      expenseContainer.style.transform = 'translateX(20px)';
-      
-      setTimeout(() => {
-        this.expenseList.removeChild(expenseContainer);
-        
-        let tempList = this.itemList.filter((item) => item.id !== id);
-        this.itemList = tempList;
+    console.log('deleteExpense called');
+    let id;
+    if (element.tagName === 'I') {
+        id = parseInt(element.parentElement.dataset.id);
+    } else {
+        id = parseInt(element.dataset.id);
+    }
+    console.log(`Deleting expense with ID: ${id}`);
+
+    const originalLength = this.itemList.length;
+    this.itemList = this.itemList.filter((item) => item.id !== id);
+
+    if (this.itemList.length < originalLength) {
+        console.log(`Removed expense ${id}. New item count: ${this.itemList.length}`);
         this.showBalance();
         this.saveToLocalStorage();
-        updateExpenseChart(this.itemList);
-        
-        // Update filtered list and UI
-        this.filterExpenses();
-        
-        // Show notification
-        this.showNotification('Expense deleted successfully', 'success');
-      }, 300);
+        this.updateCharts();
+
+        if (expenseContainer) {
+            expenseContainer.style.transition = 'all 0.3s ease';
+            expenseContainer.style.opacity = '0';
+            expenseContainer.style.transform = 'translateX(20px)';
+
+            setTimeout(() => {
+                this.filterExpenses();
+                this.showNotification('Expense deleted successfully', 'success');
+            }, 300);
+        } else {
+            this.filterExpenses();
+            this.showNotification('Expense deleted successfully', 'success');
+        }
+    } else {
+        console.error(`Expense with ID ${id} not found for deletion.`);
     }
   }
 
-  // Export budget data as JSON file
   exportData() {
+    console.log('Exporting data');
+    const rawBudget = localStorage.getItem('budget_raw') || '0';
     const budgetData = {
-      budget: this.budgetAmount.textContent,
+      budget_raw: rawBudget,
       expenses: this.itemList,
+      itemID: this.itemID.toString(),
       exportDate: new Date().toISOString()
     };
 
     const dataStr = JSON.stringify(budgetData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-    
-    const exportFileName = 'budget_data_' + new Date().toISOString().split('T')[0] + '.json';
-    
+    const dataUri =
+      'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+    const exportFileName =
+      'budget_data_' + new Date().toISOString().split('T')[0] + '.json';
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileName);
     linkElement.click();
-    
-    // Show success notification
+
     this.showNotification('Data exported successfully!', 'success');
   }
 
-  // Import budget data from JSON file
   importData(file) {
+    console.log('Importing data from file:', file.name);
     const reader = new FileReader();
-    
+
     reader.onload = (event) => {
       try {
         const importedData = JSON.parse(event.target.result);
-        
-        if (importedData.budget && importedData.expenses) {
-          // Clear current data
-          this.itemList = [];
-          this.itemID = 0;
-          
-          // Remove all expense elements (excluding header)
-          const expenseHeader = this.expenseList.querySelector('.expense-list__info');
-          this.expenseList.innerHTML = '';
-          if (expenseHeader) {
-            this.expenseList.appendChild(expenseHeader);
+        console.log('Parsed imported data:', importedData);
+
+        if (importedData.budget_raw && importedData.expenses && importedData.itemID) {
+          const rawBudget = parseFloat(importedData.budget_raw);
+          if (!isNaN(rawBudget)) {
+              localStorage.setItem('budget_raw', rawBudget.toString());
+              console.log(`Imported raw budget: ${rawBudget}`);
+          } else {
+              console.warn('Imported budget_raw is not a valid number. Skipping budget update.');
           }
-          
-          // Set budget
-          this.budgetAmount.textContent = importedData.budget;
-          
-          // Import expenses
+
           if (Array.isArray(importedData.expenses)) {
             this.itemList = importedData.expenses;
-            this.itemID = this.itemList.length > 0 
-              ? Math.max(...this.itemList.map(expense => expense.id)) + 1 
-              : 0;
-            
-            // Filter expenses to update UI
-            this.filteredList = [...this.itemList];
-            this.updateExpenseList();
+            console.log(`Imported ${this.itemList.length} expenses.`);
+          } else {
+              console.warn('Imported expenses data is not an array. Skipping expense import.');
+              this.itemList = [];
           }
-          
-          // Update balance and save to localStorage
+
+          const importedItemID = parseInt(importedData.itemID);
+           if (!isNaN(importedItemID)) {
+               this.itemID = importedItemID;
+               console.log(`Imported itemID: ${this.itemID}`);
+           } else {
+               console.warn('Imported itemID is not a valid number. Recalculating.');
+               this.itemID = this.itemList.length > 0 ? Math.max(...this.itemList.map((expense) => expense.id || 0)) + 1 : 0;
+           }
+
+          if(this.expenseSearch) this.expenseSearch.value = '';
+          if(this.filterCategory) this.filterCategory.value = 'all';
+          if(this.filterPeriod) this.filterPeriod.value = 'all';
+
           this.showBalance();
           this.saveToLocalStorage();
-          
-          // Update charts
-          updateExpenseChart(this.itemList);
-          updateExpenseTrendChart(this.itemList);
-          
+          this.filterExpenses();
+          this.updateCharts();
+
           this.showNotification('Data imported successfully!', 'success');
+          console.log('Data import completed successfully.');
+
         } else {
-          this.showNotification('Invalid data format!', 'danger');
+          console.error('Invalid data format in imported file.', importedData);
+          this.showNotification('Invalid data format! Required fields: budget_raw, expenses, itemID.', 'danger');
         }
       } catch (error) {
         console.error('Import error:', error);
-        this.showNotification('Error importing data: ' + error.message, 'danger');
+        this.showNotification(
+          'Error importing data: ' + error.message,
+          'danger'
+        );
       }
     };
-    
+
     reader.onerror = () => {
       this.showNotification('Error reading file!', 'danger');
     };
-    
+
     reader.readAsText(file);
   }
 
-  // Show notification
+  updateCharts() {
+      console.log('Updating charts...');
+      if (typeof updateExpenseChart === 'function') {
+          updateExpenseChart(this.itemList);
+      }
+      if (typeof updateExpenseTrendChart === 'function') {
+          updateExpenseTrendChart(this.itemList);
+      }
+  }
+
   showNotification(message, type = 'info') {
     const notificationDiv = document.createElement('div');
     notificationDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
@@ -719,10 +676,9 @@ class UI {
       ${message}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     `;
-    
+
     document.body.appendChild(notificationDiv);
-    
-    // Auto-remove after 3 seconds
+
     setTimeout(() => {
       notificationDiv.remove();
     }, 3000);
@@ -731,268 +687,97 @@ class UI {
 
 function eventListeners() {
   console.log('Setting up event listeners');
-  const BudgetForm = document.getElementById('budget-form');
-  const BudgetSubmitBtn = document.getElementById('budget-submit');
-  const ExpenseForm = document.getElementById('expense-form');
   const ExportBtn = document.getElementById('export-data');
   const ImportBtn = document.getElementById('import-data');
   const ImportFile = document.getElementById('import-file');
-  
-  console.log('Budget submit button found:', !!BudgetSubmitBtn);
-  
-  // Initialize UI
+
   const ui = new UI();
 
-  // Budget form submission - still keep this for backward compatibility
-  if (BudgetForm) {
-    BudgetForm.addEventListener('submit', function (event) {
-      console.log('Budget form submit event triggered');
+  if (ui.budgetSubmitBtn) {
+    console.log('Adding click listener to budget submit button');
+    ui.budgetSubmitBtn.addEventListener('click', function (event) {
       event.preventDefault();
+      console.log('Budget submit button clicked');
       ui.submitBudgetForm();
     });
-  }
-  
-  // Direct budget button click event
-  if (BudgetSubmitBtn) {
-    console.log('Adding click event to budget submit button');
-    BudgetSubmitBtn.addEventListener('click', function() {
-      console.log('Budget submit button clicked from eventListeners');
-      ui.submitBudgetForm();
-    });
+  } else {
+      console.error("Budget submit button not found in eventListeners setup.");
   }
 
-  // Expense form submission
-  if (ExpenseForm) {
-    ExpenseForm.addEventListener('submit', function (event) {
-      console.log('Expense form submit event triggered');
-      event.preventDefault();
-      ui.submitExpenseForm();
-    });
+  if (ui.expenseSubmitBtn) {
+      console.log('Adding click listener to expense submit button');
+      ui.expenseSubmitBtn.addEventListener('click', function (event) {
+          event.preventDefault();
+          console.log('Expense submit button clicked');
+          ui.submitExpenseForm();
+      });
+  } else {
+      console.error("Expense submit button not found in eventListeners setup.");
   }
-  
-  // Export data event
+
+  if (ui.expenseForm) {
+      ui.expenseForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          console.log('Expense form submitted (Enter pressed?), calling submitExpenseForm via button logic.');
+          ui.submitExpenseForm();
+      });
+  }
+
+  if (ui.expenseList) {
+      ui.expenseList.addEventListener('click', function (event) {
+          const element = event.target;
+          if (element.closest('.edit-icon')) {
+              event.preventDefault();
+              console.log('Edit icon clicked');
+              ui.editExpense(element.closest('.edit-icon'));
+          }
+          else if (element.closest('.delete-icon')) {
+              event.preventDefault();
+              console.log('Delete icon clicked');
+              ui.deleteExpense(element.closest('.delete-icon'));
+          }
+      });
+  }
+
+  if (ui.expenseSearch) {
+    console.log('Adding input listener to expense search');
+    ui.expenseSearch.addEventListener('input', () => ui.filterExpenses());
+  }
+  if (ui.filterCategory) {
+    console.log('Adding change listener to filter category');
+    ui.filterCategory.addEventListener('change', () => ui.filterExpenses());
+  }
+  if (ui.filterPeriod) {
+    console.log('Adding change listener to filter period');
+    ui.filterPeriod.addEventListener('change', () => ui.filterExpenses());
+  }
+
   if (ExportBtn) {
-    ExportBtn.addEventListener('click', function() {
+    ExportBtn.addEventListener('click', function () {
+      console.log('Export button clicked');
       ui.exportData();
     });
   }
-  
-  // Import data events
+
   if (ImportBtn && ImportFile) {
-    ImportBtn.addEventListener('click', function() {
+    ImportBtn.addEventListener('click', function () {
+      console.log('Import button clicked, triggering file input');
       ImportFile.click();
     });
-    
-    ImportFile.addEventListener('change', function(event) {
+
+    ImportFile.addEventListener('change', function (event) {
       if (event.target.files.length > 0) {
+        console.log('File selected for import:', event.target.files[0].name);
         ui.importData(event.target.files[0]);
-        // Reset file input
         event.target.value = '';
       }
     });
   }
-  
+
   console.log('Event listeners setup complete');
 }
 
 document.addEventListener('DOMContentLoaded', function () {
   console.log('DOM content loaded, initializing application');
   eventListeners();
-});
-
-// Filter expenses based on category and period
-function filterExpenses() {
-  console.log('Filtering expenses');
-  
-  // Get filter values
-  const categoryFilter = document.getElementById('filter-category').value;
-  const periodFilter = document.getElementById('filter-period').value;
-  const searchQuery = document.getElementById('expense-search').value.toLowerCase();
-  
-  console.log('Filters:', { category: categoryFilter, period: periodFilter, search: searchQuery });
-  
-  // Get all expense items
-  const expenseItems = document.querySelectorAll('.expense-item-container');
-  console.log(`Found ${expenseItems.length} expense items`);
-  
-  // Track if any items are visible
-  let hasVisibleItems = false;
-  
-  // Get current expenses from localStorage
-  let expenses = [];
-  if (localStorage.getItem('expenses')) {
-    expenses = JSON.parse(localStorage.getItem('expenses'));
-  }
-  
-  // Process each expense item
-  expenseItems.forEach(item => {
-    const expenseId = item.querySelector('.delete-expense').dataset.id;
-    const expense = expenses.find(exp => exp.id.toString() === expenseId);
-    
-    if (!expense) {
-      item.style.display = 'none';
-      return;
-    }
-    
-    // Check if expense matches the search query
-    const title = expense.title.toLowerCase();
-    const category = expense.category.toLowerCase();
-    const matchesSearch = searchQuery === '' || 
-                          title.includes(searchQuery) || 
-                          category.includes(searchQuery);
-    
-    // Check if expense matches category filter
-    const matchesCategory = categoryFilter === 'all' || expense.category === categoryFilter;
-    
-    // Check if expense matches period filter
-    let matchesPeriod = true;
-    if (periodFilter !== 'all') {
-      const expenseDate = new Date(expense.date);
-      const now = new Date();
-      
-      if (periodFilter === 'today') {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        matchesPeriod = expenseDate >= today;
-      } else if (periodFilter === 'thisWeek') {
-        const startOfWeek = new Date(now);
-        startOfWeek.setDate(now.getDate() - now.getDay()); // Start of week (Sunday)
-        startOfWeek.setHours(0, 0, 0, 0);
-        matchesPeriod = expenseDate >= startOfWeek;
-      } else if (periodFilter === 'thisMonth') {
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        matchesPeriod = expenseDate >= startOfMonth;
-      } else if (periodFilter === 'last3Months') {
-        const threeMonthsAgo = new Date(now);
-        threeMonthsAgo.setMonth(now.getMonth() - 3);
-        matchesPeriod = expenseDate >= threeMonthsAgo;
-      }
-    }
-    
-    // Show or hide the expense item
-    if (matchesSearch && matchesCategory && matchesPeriod) {
-      item.style.display = 'block';
-      hasVisibleItems = true;
-    } else {
-      item.style.display = 'none';
-    }
-  });
-  
-  // Show or hide no expenses message
-  const noExpensesMessage = document.getElementById('no-expenses-message');
-  const expenseList = document.getElementById('expense-list');
-  
-  // Remove any existing no results message
-  const existingNoResults = document.getElementById('no-results-message');
-  if (existingNoResults) {
-    existingNoResults.remove();
-  }
-  
-  if (!hasVisibleItems && expenseItems.length > 0) {
-    // Create no results message
-    const noResultsMsg = document.createElement('div');
-    noResultsMsg.id = 'no-results-message';
-    noResultsMsg.className = 'text-center py-4';
-    noResultsMsg.innerHTML = `
-      <div class="py-5">
-        <i class="bi bi-search text-muted display-1 mb-3"></i>
-        <p class="text-muted mb-0">No expenses match your filters.</p>
-        <p class="text-muted">Try adjusting your search criteria.</p>
-      </div>
-    `;
-    expenseList.appendChild(noResultsMsg);
-    
-    // Hide no expenses message if it exists
-    if (noExpensesMessage) {
-      noExpensesMessage.style.display = 'none';
-    }
-  }
-  
-  // Update charts if function is available
-  if (typeof updateExpenseChart === 'function') {
-    const filteredExpenses = getFilteredExpenses();
-    updateExpenseChart(filteredExpenses);
-    
-    if (typeof updateExpenseTrendChart === 'function') {
-      updateExpenseTrendChart(filteredExpenses);
-    }
-  }
-  
-  console.log('Filtering complete, visible items:', hasVisibleItems);
-}
-
-// Helper function to get currently filtered expenses
-function getFilteredExpenses() {
-  const categoryFilter = document.getElementById('filter-category').value;
-  const periodFilter = document.getElementById('filter-period').value;
-  const searchQuery = document.getElementById('expense-search').value.toLowerCase();
-  
-  // Get expenses from localStorage
-  let expenses = [];
-  if (localStorage.getItem('expenses')) {
-    expenses = JSON.parse(localStorage.getItem('expenses'));
-  }
-  
-  // Apply filters
-  return expenses.filter(expense => {
-    // Check search query
-    const title = expense.title.toLowerCase();
-    const category = expense.category.toLowerCase();
-    const matchesSearch = searchQuery === '' || 
-                          title.includes(searchQuery) || 
-                          category.includes(searchQuery);
-    
-    // Check category
-    const matchesCategory = categoryFilter === 'all' || expense.category === categoryFilter;
-    
-    // Check period
-    let matchesPeriod = true;
-    if (periodFilter !== 'all') {
-      const expenseDate = new Date(expense.date);
-      const now = new Date();
-      
-      if (periodFilter === 'today') {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        matchesPeriod = expenseDate >= today;
-      } else if (periodFilter === 'thisWeek') {
-        const startOfWeek = new Date(now);
-        startOfWeek.setDate(now.getDate() - now.getDay()); // Start of week (Sunday)
-        startOfWeek.setHours(0, 0, 0, 0);
-        matchesPeriod = expenseDate >= startOfWeek;
-      } else if (periodFilter === 'thisMonth') {
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        matchesPeriod = expenseDate >= startOfMonth;
-      } else if (periodFilter === 'last3Months') {
-        const threeMonthsAgo = new Date(now);
-        threeMonthsAgo.setMonth(now.getMonth() - 3);
-        matchesPeriod = expenseDate >= threeMonthsAgo;
-      }
-    }
-    
-    return matchesSearch && matchesCategory && matchesPeriod;
-  });
-}
-
-// Setup filter listeners
-document.addEventListener('DOMContentLoaded', function() {
-  // Set up filter listeners
-  const categoryFilter = document.getElementById('filter-category');
-  const periodFilter = document.getElementById('filter-period');
-  const searchInput = document.getElementById('expense-search');
-  
-  if (categoryFilter) {
-    console.log('Adding event listener to category filter');
-    categoryFilter.addEventListener('change', filterExpenses);
-  }
-  
-  if (periodFilter) {
-    console.log('Adding event listener to period filter');
-    periodFilter.addEventListener('change', filterExpenses);
-  }
-  
-  if (searchInput) {
-    console.log('Adding event listener to search input');
-    searchInput.addEventListener('input', filterExpenses);
-  }
 });
