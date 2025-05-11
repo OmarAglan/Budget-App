@@ -1,3 +1,9 @@
+function sanitizeHTML(str) {
+  let temp = document.createElement('div');
+  temp.textContent = str;
+  return temp.innerHTML;
+}
+
 class UI {
   /**
    * Constructor function for initializing UI elements.
@@ -180,8 +186,8 @@ class UI {
         noResultsMsg.innerHTML = `
           <div class="py-5">
             <i class="bi bi-search text-muted display-1 mb-3"></i>
-            <p class="text-muted mb-0">No expenses match your filters.</p>
-            <p class="text-muted">Try adjusting your search criteria.</p>
+            <p class="text-muted mb-0">${sanitizeHTML("No expenses match your filters.")}</p>
+            <p class="text-muted">${sanitizeHTML("Try adjusting your search criteria.")}</p>
           </div>
         `;
         this.expenseList.appendChild(noResultsMsg);
@@ -267,7 +273,7 @@ class UI {
       if (value === '' || isNaN(budgetValue) || budgetValue < 0) {
         console.log('Invalid budget value');
         this.budgetFeedback.classList.add('showItem');
-        this.budgetFeedback.innerHTML = `<p>Value cannot be empty or negative.</p>`;
+        this.budgetFeedback.innerHTML = `<p>${sanitizeHTML("Value cannot be empty or negative.")}</p>`;
         setTimeout(() => {
           this.budgetFeedback.classList.remove('showItem');
         }, 3000);
@@ -283,7 +289,7 @@ class UI {
     } catch (error) {
       console.error('Error setting budget:', error);
       this.budgetFeedback.classList.add('showItem');
-      this.budgetFeedback.innerHTML = `<p>Error setting budget: ${error.message}</p>`;
+      this.budgetFeedback.innerHTML = `<p>${sanitizeHTML("Error setting budget: " + error.message)}</p>`;
       setTimeout(() => {
         this.budgetFeedback.classList.remove('showItem');
       }, 3000);
@@ -341,7 +347,7 @@ class UI {
     ) {
         console.log('Invalid expense data');
         this.expenseFeedback.classList.add('showItem');
-        this.expenseFeedback.innerHTML = `<p>All fields are required. Amount must be positive.</p>`;
+        this.expenseFeedback.innerHTML = `<p>${sanitizeHTML("All fields are required. Amount must be positive.")}</p>`;
         setTimeout(() => {
             this.expenseFeedback.classList.remove('showItem');
         }, 3000);
@@ -426,12 +432,12 @@ class UI {
             </div>
             <div>
               <h6 class="expense-title mb-1 text-capitalize fw-semibold">
-                ${expense.title}
+                ${sanitizeHTML(expense.title)}
               </h6>
               <div class="text-muted small">
-                <span class="me-2"><i class="bi bi-tag"></i> ${
+                <span class="me-2"><i class="bi bi-tag"></i> ${sanitizeHTML(
                   expense.category
-                }</span>
+                )}</span>
                 <span><i class="bi bi-calendar"></i> ${formattedDate}</span>
               </div>
             </div>
