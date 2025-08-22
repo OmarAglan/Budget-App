@@ -1,6 +1,30 @@
 // Global chart instances
 let expenseChart = null;
 let trendChart = null;
+let comparisonChart = null;
+
+// Enhanced color schemes
+const modernColors = {
+  primary: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'],
+  gradients: [
+    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+    'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+    'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'
+  ],
+  rgba: [
+    'rgba(102, 126, 234, 0.8)',
+    'rgba(118, 75, 162, 0.8)',
+    'rgba(240, 147, 251, 0.8)',
+    'rgba(245, 87, 108, 0.8)',
+    'rgba(79, 172, 254, 0.8)',
+    'rgba(0, 242, 254, 0.8)',
+    'rgba(67, 233, 123, 0.8)'
+  ]
+};
 
 // Initialize charts on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -48,60 +72,60 @@ function initializeExpenseChart() {
         labels: [],
         datasets: [{
           data: [],
-          backgroundColor: [
-            'rgba(54, 162, 235, 0.7)',
-            'rgba(255, 99, 132, 0.7)',
-            'rgba(255, 206, 86, 0.7)',
-            'rgba(75, 192, 192, 0.7)',
-            'rgba(153, 102, 255, 0.7)',
-            'rgba(255, 159, 64, 0.7)',
-            'rgba(199, 199, 199, 0.7)'
-          ],
-          borderColor: [
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 99, 132, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-            'rgba(199, 199, 199, 1)'
-          ],
-          borderWidth: 1
+          backgroundColor: modernColors.rgba,
+          borderColor: modernColors.primary,
+          borderWidth: 3,
+          hoverBorderWidth: 5,
+          hoverOffset: 10
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        cutout: '60%',
+        animation: {
+          animateRotate: true,
+          animateScale: true,
+          duration: 1000,
+          easing: 'easeInOutQuart'
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
         plugins: {
           legend: {
-            position: 'right',
+            position: 'bottom',
             labels: {
               font: {
-                family: 'Inter, sans-serif'
-              }
+                family: 'Inter, sans-serif',
+                size: 12,
+                weight: '500'
+              },
+              padding: 20,
+              usePointStyle: true,
+              pointStyle: 'circle'
             }
           },
           tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            titleColor: 'white',
+            bodyColor: 'white',
+            cornerRadius: 8,
+            padding: 12,
+            displayColors: true,
             callbacks: {
               label: function(context) {
                 const label = context.label || '';
-                const value = context.formattedValue;
+                const value = parseFloat(context.raw).toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                });
                 const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
                 const percentage = Math.round((context.raw / total) * 100);
                 return `${label}: $${value} (${percentage}%)`;
               }
             }
-          },
-          doughnutLabel: {
-            labels: [
-              {
-                text: 'Total',
-                font: {
-                  size: 20,
-                  weight: 'bold'
-                }
-              }
-            ]
           }
         }
       }
@@ -140,40 +164,85 @@ function initializeTrendChart() {
         datasets: [{
           label: 'Daily Expenses',
           data: [],
-          backgroundColor: 'rgba(54, 162, 235, 0.7)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
+          backgroundColor: function(context) {
+            const chart = context.chart;
+            const {ctx, chartArea} = chart;
+            if (!chartArea) return 'rgba(102, 126, 234, 0.8)';
+            
+            const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+            gradient.addColorStop(0, 'rgba(102, 126, 234, 0.1)');
+            gradient.addColorStop(1, 'rgba(102, 126, 234, 0.8)');
+            return gradient;
+          },
+          borderColor: '#667eea',
+          borderWidth: 2,
+          borderRadius: 8,
+          borderSkipped: false,
+          hoverBackgroundColor: 'rgba(102, 126, 234, 0.9)',
+          hoverBorderColor: '#5a67d8',
+          hoverBorderWidth: 3
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+          duration: 1000,
+          easing: 'easeInOutQuart'
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
         scales: {
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              font: {
+                family: 'Inter, sans-serif',
+                size: 11
+              }
+            }
+          },
           y: {
             beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)',
+              lineWidth: 1
+            },
             ticks: {
+              font: {
+                family: 'Inter, sans-serif',
+                size: 11
+              },
               callback: function(value) {
-                return '$' + value;
+                return '$' + value.toLocaleString();
               }
             }
           }
         },
         plugins: {
           legend: {
-            display: true,
-            position: 'top',
-            labels: {
-              font: {
-                family: 'Inter, sans-serif'
-              }
-            }
+            display: false
           },
           tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            titleColor: 'white',
+            bodyColor: 'white',
+            cornerRadius: 8,
+            padding: 12,
             callbacks: {
+              title: function(context) {
+                return context[0].label;
+              },
               label: function(context) {
-                const label = context.dataset.label || '';
-                const value = context.formattedValue;
-                return `${label}: $${value}`;
+                const value = parseFloat(context.raw).toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                });
+                return `Expenses: $${value}`;
               }
             }
           }

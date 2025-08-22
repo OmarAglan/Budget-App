@@ -1,7 +1,69 @@
+// Enhanced security and validation functions
 function sanitizeHTML(str) {
+  if (typeof str !== 'string') return '';
   let temp = document.createElement('div');
   temp.textContent = str;
   return temp.innerHTML;
+}
+
+function validateNumber(value, min = 0, max = Number.MAX_SAFE_INTEGER) {
+  const num = parseFloat(value);
+  if (isNaN(num) || num < min || num > max) {
+    return { isValid: false, error: `Value must be between ${min} and ${max}` };
+  }
+  return { isValid: true, value: num };
+}
+
+function validateString(str, minLength = 1, maxLength = 100) {
+  if (typeof str !== 'string') {
+    return { isValid: false, error: 'Value must be a string' };
+  }
+  const trimmed = str.trim();
+  if (trimmed.length < minLength || trimmed.length > maxLength) {
+    return { isValid: false, error: `Length must be between ${minLength} and ${maxLength} characters` };
+  }
+  return { isValid: true, value: trimmed };
+}
+
+function validateDate(dateStr) {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(now.getFullYear() - 1);
+  const oneYearFromNow = new Date();
+  oneYearFromNow.setFullYear(now.getFullYear() + 1);
+  
+  if (isNaN(date.getTime()) || date < oneYearAgo || date > oneYearFromNow) {
+    return { isValid: false, error: 'Date must be within the last year to one year in the future' };
+  }
+  return { isValid: true, value: dateStr };
+}
+
+// Performance optimization: Debounce function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Performance optimization: Throttle function
+function throttle(func, limit) {
+  let inThrottle;
+  return function() {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
 }
 
 class UI {
@@ -42,6 +104,39 @@ class UI {
     this.expenseSearch = document.getElementById('expense-search');
     this.filterCategory = document.getElementById('filter-category');
     this.filterPeriod = document.getElementById('filter-period');
+
+    // New enhanced elements
+    this.expensePercentage = document.getElementById('expense-percentage');
+    this.budgetProgress = document.getElementById('budget-progress');
+    this.monthExpenses = document.getElementById('month-expenses');
+    this.weekExpenses = document.getElementById('week-expenses');
+    this.todayExpenses = document.getElementById('today-expenses');
+    this.avgDaily = document.getElementById('avg-daily');
+    this.healthScore = document.getElementById('health-score');
+    this.healthScoreCircle = document.getElementById('health-score-circle');
+    this.budgetAdherence = document.getElementById('budget-adherence');
+    this.spendingTrend = document.getElementById('spending-trend');
+    this.financialTip = document.getElementById('financial-tip');
+    this.recentActivity = document.getElementById('recent-activity');
+    this.smartInsights = document.getElementById('smart-insights');
+    this.categoryBredownTable = document.getElementById('category-breakdown-table');
+
+    // Quick action buttons
+    this.clearDataBtn = document.getElementById('clear-data');
+    this.resetFiltersBtn = document.getElementById('reset-filters');
+    this.bulkDeleteBtn = document.getElementById('bulk-delete');
+    this.monthlyReportBtn = document.getElementById('monthly-report');
+
+    // Budget presets
+    this.preset1000 = document.getElementById('preset-1000');
+    this.preset2500 = document.getElementById('preset-2500');
+
+    // Quick amount buttons
+    this.quickAmountBtns = document.querySelectorAll('.quick-amount');
+
+    // Sorting functionality
+    this.currentSort = 'date-desc';
+    this.sortButtons = document.querySelectorAll('[data-sort]');
 
     // Check expense elements
     if (!this.expenseInput) console.error('Expense input element not found');
@@ -266,33 +361,41 @@ class UI {
   submitBudgetForm() {
     console.log('submitBudgetForm method called');
     const value = this.budgetInput.value;
-    const budgetValue = parseFloat(value);
     console.log('Budget input value:', value);
 
     try {
-      if (value === '' || isNaN(budgetValue) || budgetValue < 0) {
+      // Enhanced validation
+      const budgetValidation = validateNumber(value, 1, 1000000);
+      
+      if (!budgetValidation.isValid) {
         console.log('Invalid budget value');
-        this.budgetFeedback.classList.add('showItem');
-        this.budgetFeedback.innerHTML = `<p>${sanitizeHTML("Value cannot be empty or negative.")}</p>`;
-        setTimeout(() => {
-          this.budgetFeedback.classList.remove('showItem');
-        }, 3000);
-      } else {
-        console.log('Setting budget to:', budgetValue);
-        localStorage.setItem('budget_raw', budgetValue.toString());
-        this.budgetInput.value = '';
-        this.showBalance();
-        this.saveToLocalStorage();
-        this.showNotification('Budget set successfully!', 'success');
-        console.log('Budget updated successfully');
+        this.showBudgetValidationError(budgetValidation.error);
+        return;
       }
+
+      const budgetValue = budgetValidation.value;
+      console.log('Setting budget to:', budgetValue);
+      
+      localStorage.setItem('budget_raw', budgetValue.toString());
+      this.budgetInput.value = '';
+      this.showBalance();
+      this.saveToLocalStorage();
+      this.showNotification('Budget set successfully!', 'success');
+      console.log('Budget updated successfully');
+      
     } catch (error) {
       console.error('Error setting budget:', error);
+      this.showBudgetValidationError('Unexpected error: ' + error.message);
+    }
+  }
+
+  showBudgetValidationError(message) {
+    if (this.budgetFeedback) {
       this.budgetFeedback.classList.add('showItem');
-      this.budgetFeedback.innerHTML = `<p>${sanitizeHTML("Error setting budget: " + error.message)}</p>`;
+      this.budgetFeedback.innerHTML = `<div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i>${sanitizeHTML(message)}</div>`;
       setTimeout(() => {
         this.budgetFeedback.classList.remove('showItem');
-      }, 3000);
+      }, 4000);
     }
   }
 
@@ -305,28 +408,367 @@ class UI {
     const balance = rawBudget - totalExpense;
 
     if (this.budgetAmount) {
-        this.budgetAmount.textContent = this.formatNumber(rawBudget);
+        this.budgetAmount.textContent = '$' + this.formatNumber(rawBudget);
     }
 
     if (this.expenseAmount) {
-        this.expenseAmount.textContent = this.formatNumber(totalExpense);
+        this.expenseAmount.textContent = '$' + this.formatNumber(totalExpense);
     }
 
     if (this.balanceAmount) {
-        this.balanceAmount.textContent = this.formatNumber(balance);
-        this.balanceAmount.classList.remove('text-success', 'text-danger', 'text-muted');
+        this.balanceAmount.textContent = '$' + this.formatNumber(balance);
+        this.balanceAmount.classList.remove('text-success', 'text-danger', 'text-muted', 'stat-positive', 'stat-negative');
         if (balance > 0) {
-            this.balanceAmount.classList.add('text-success');
+            this.balanceAmount.classList.add('text-success', 'stat-positive');
         } else if (balance < 0) {
-            this.balanceAmount.classList.add('text-danger');
+            this.balanceAmount.classList.add('text-danger', 'stat-negative');
         } else {
             this.balanceAmount.classList.add('text-muted');
         }
     }
 
+    // Update percentage and progress bar
+    if (this.expensePercentage && rawBudget > 0) {
+        const percentage = Math.round((totalExpense / rawBudget) * 100);
+        this.expensePercentage.innerHTML = `<i class="bi bi-percent me-1"></i>${percentage}% of budget`;
+    }
+
+    if (this.budgetProgress && rawBudget > 0) {
+        const progressPercentage = Math.min((totalExpense / rawBudget) * 100, 100);
+        this.budgetProgress.style.width = `${progressPercentage}%`;
+        
+        // Change color based on percentage
+        this.budgetProgress.classList.remove('bg-success', 'bg-warning', 'bg-danger');
+        if (progressPercentage <= 60) {
+            this.budgetProgress.classList.add('bg-success');
+        } else if (progressPercentage <= 85) {
+            this.budgetProgress.classList.add('bg-warning');
+        } else {
+            this.budgetProgress.classList.add('bg-danger');
+        }
+    }
+
+    // Update period-based statistics
+    this.updatePeriodStats();
+    this.updateFinancialHealth();
+    this.updateSmartInsights();
+    this.updateRecentActivity();
+    this.updateCategoryBreakdown();
+
     console.log(
       `Balance updated: Budget $${this.formatNumber(rawBudget)}, Expenses $${this.formatNumber(totalExpense)}, Balance $${this.formatNumber(balance)}`
     );
+  }
+
+  updatePeriodStats() {
+    const now = new Date();
+    
+    // Calculate different time periods
+    const today = new Date(now);
+    today.setHours(0, 0, 0, 0);
+    
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - now.getDay());
+    weekStart.setHours(0, 0, 0, 0);
+    
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    // Calculate expenses for each period
+    const todayExpenses = this.itemList
+        .filter(expense => new Date(expense.date) >= today)
+        .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+        
+    const weekExpenses = this.itemList
+        .filter(expense => new Date(expense.date) >= weekStart)
+        .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+        
+    const monthExpenses = this.itemList
+        .filter(expense => new Date(expense.date) >= monthStart)
+        .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+
+    // Calculate average daily spending (last 30 days)
+    const thirtyDaysAgo = new Date(now);
+    thirtyDaysAgo.setDate(now.getDate() - 30);
+    const last30DaysExpenses = this.itemList
+        .filter(expense => new Date(expense.date) >= thirtyDaysAgo)
+        .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+    const avgDaily = last30DaysExpenses / 30;
+
+    // Update UI elements
+    if (this.todayExpenses) {
+        this.todayExpenses.textContent = '$' + this.formatNumber(todayExpenses);
+    }
+    if (this.weekExpenses) {
+        this.weekExpenses.textContent = '$' + this.formatNumber(weekExpenses);
+    }
+    if (this.monthExpenses) {
+        this.monthExpenses.textContent = '$' + this.formatNumber(monthExpenses);
+    }
+    if (this.avgDaily) {
+        this.avgDaily.textContent = '$' + this.formatNumber(avgDaily);
+    }
+  }
+
+  updateFinancialHealth() {
+    const rawBudget = parseFloat(localStorage.getItem('budget_raw') || '0');
+    const totalExpense = this.itemList.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
+    
+    let score = 85; // Base score
+    let adherence = 'Excellent';
+    let trend = 'Stable';
+    
+    if (rawBudget > 0) {
+        const spentPercentage = (totalExpense / rawBudget) * 100;
+        
+        if (spentPercentage <= 50) {
+            score = 95;
+            adherence = 'Excellent';
+        } else if (spentPercentage <= 75) {
+            score = 80;
+            adherence = 'Good';
+        } else if (spentPercentage <= 90) {
+            score = 65;
+            adherence = 'Fair';
+        } else if (spentPercentage <= 100) {
+            score = 45;
+            adherence = 'Poor';
+        } else {
+            score = 25;
+            adherence = 'Critical';
+        }
+    }
+
+    // Update health score display
+    if (this.healthScore) {
+        this.healthScore.textContent = score;
+    }
+    
+    if (this.healthScoreCircle) {
+        const circumference = 2 * Math.PI * 52;
+        const offset = circumference - (score / 100) * circumference;
+        this.healthScoreCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+        this.healthScoreCircle.style.strokeDashoffset = offset;
+        
+        // Change color based on score
+        if (score >= 80) {
+            this.healthScoreCircle.setAttribute('stroke', '#10b981');
+        } else if (score >= 60) {
+            this.healthScoreCircle.setAttribute('stroke', '#f59e0b');
+        } else {
+            this.healthScoreCircle.setAttribute('stroke', '#ef4444');
+        }
+    }
+    
+    if (this.budgetAdherence) {
+        this.budgetAdherence.textContent = adherence;
+        this.budgetAdherence.className = score >= 80 ? 'text-success' : score >= 60 ? 'text-warning' : 'text-danger';
+    }
+    
+    if (this.spendingTrend) {
+        this.spendingTrend.textContent = trend;
+    }
+  }
+
+  updateSmartInsights() {
+    if (!this.smartInsights) return;
+    
+    const rawBudget = parseFloat(localStorage.getItem('budget_raw') || '0');
+    const totalExpense = this.itemList.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
+    const insights = [];
+
+    // Generate insights based on spending patterns
+    if (rawBudget > 0 && totalExpense > 0) {
+        const spentPercentage = (totalExpense / rawBudget) * 100;
+        
+        if (spentPercentage > 90) {
+            insights.push({
+                type: 'warning',
+                icon: 'exclamation-triangle',
+                title: 'Budget Alert',
+                message: 'You\'ve spent over 90% of your budget. Consider reducing expenses.'
+            });
+        } else if (spentPercentage < 30) {
+            insights.push({
+                type: 'success',
+                icon: 'check-circle',
+                title: 'Great Job!',
+                message: 'You\'re well within your budget. Consider increasing your savings.'
+            });
+        }
+
+        // Category-based insights
+        const categoryTotals = this.getCategoryTotals();
+        const topCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0];
+        
+        if (topCategory && topCategory[1] > totalExpense * 0.4) {
+            insights.push({
+                type: 'info',
+                icon: 'info-circle',
+                title: 'Spending Pattern',
+                message: `${topCategory[0]} accounts for ${Math.round((topCategory[1] / totalExpense) * 100)}% of your expenses.`
+            });
+        }
+    }
+
+    // Default insight if no specific insights
+    if (insights.length === 0) {
+        insights.push({
+            type: 'info',
+            icon: 'lightbulb',
+            title: 'Keep Going!',
+            message: 'Track more expenses to get personalized insights and recommendations.'
+        });
+    }
+
+    // Render insights
+    this.smartInsights.innerHTML = insights.map(insight => `
+        <div class="insight-item mb-3 p-3 bg-light rounded">
+            <div class="d-flex align-items-start">
+                <i class="bi bi-${insight.icon} text-${insight.type === 'warning' ? 'warning' : insight.type === 'success' ? 'success' : 'primary'} me-2 mt-1"></i>
+                <div>
+                    <div class="fw-semibold">${insight.title}</div>
+                    <div class="text-muted small">${insight.message}</div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+  }
+
+  updateRecentActivity() {
+    if (!this.recentActivity) return;
+    
+    const recentExpenses = [...this.itemList]
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 5);
+
+    if (recentExpenses.length === 0) {
+        this.recentActivity.innerHTML = `
+            <div class="text-center py-4 text-muted">
+                <i class="bi bi-clock display-4 mb-3"></i>
+                <p>No recent activity</p>
+            </div>
+        `;
+        return;
+    }
+
+    this.recentActivity.innerHTML = recentExpenses.map(expense => {
+        const date = new Date(expense.date);
+        const timeAgo = this.getTimeAgo(date);
+        
+        return `
+            <div class="d-flex align-items-center mb-3 p-2 rounded hover-lift">
+                <div class="category-badge bg-primary bg-opacity-10 text-primary me-3">
+                    <i class="bi bi-${this.getCategoryIcon(expense.category)}"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="fw-semibold">${sanitizeHTML(expense.title)}</div>
+                    <div class="text-muted small">${timeAgo}</div>
+                </div>
+                <div class="text-end">
+                    <div class="fw-bold text-danger">$${this.formatNumber(expense.amount)}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+  }
+
+  updateCategoryBreakdown() {
+    if (!this.categoryBredownTable) return;
+    
+    const categoryTotals = this.getCategoryTotals();
+    const totalExpenses = Object.values(categoryTotals).reduce((sum, amount) => sum + amount, 0);
+    
+    if (totalExpenses === 0) {
+        this.categoryBredownTable.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center text-muted py-4">
+                    <i class="bi bi-table display-4 mb-3 d-block"></i>
+                    No data available
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    const categoryStats = Object.entries(categoryTotals).map(([category, amount]) => {
+        const transactions = this.itemList.filter(expense => expense.category === category);
+        const avgPerTransaction = amount / transactions.length;
+        const percentage = (amount / totalExpenses) * 100;
+        
+        return {
+            category,
+            amount,
+            percentage,
+            transactions: transactions.length,
+            avgPerTransaction
+        };
+    }).sort((a, b) => b.amount - a.amount);
+
+    this.categoryBredownTable.innerHTML = categoryStats.map(stat => `
+        <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-${this.getCategoryIcon(stat.category)} me-2 text-primary"></i>
+                    <span class="text-capitalize">${stat.category}</span>
+                </div>
+            </td>
+            <td class="fw-bold">$${this.formatNumber(stat.amount)}</td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <div class="progress me-2" style="width: 60px; height: 8px;">
+                        <div class="progress-bar bg-primary" style="width: ${stat.percentage}%"></div>
+                    </div>
+                    <span>${stat.percentage.toFixed(1)}%</span>
+                </div>
+            </td>
+            <td>${stat.transactions}</td>
+            <td>$${this.formatNumber(stat.avgPerTransaction)}</td>
+        </tr>
+    `).join('');
+  }
+
+  getCategoryTotals() {
+    const categoryTotals = {};
+    this.itemList.forEach(expense => {
+        const category = expense.category || 'other';
+        categoryTotals[category] = (categoryTotals[category] || 0) + parseFloat(expense.amount);
+    });
+    return categoryTotals;
+  }
+
+  getCategoryIcon(category) {
+    const icons = {
+        groceries: 'cart',
+        transportation: 'car-front',
+        utilities: 'lightning',
+        entertainment: 'film',
+        healthcare: 'heart-pulse',
+        shopping: 'bag',
+        dining: 'cup-hot',
+        education: 'book',
+        travel: 'airplane',
+        fitness: 'heart',
+        other: 'three-dots'
+    };
+    return icons[category] || 'three-dots';
+  }
+
+  getTimeAgo(date) {
+    const now = new Date();
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+    const diffMinutes = Math.floor(diffTime / (1000 * 60));
+
+    if (diffDays > 0) {
+        return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    } else if (diffHours > 0) {
+        return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    } else if (diffMinutes > 0) {
+        return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+    } else {
+        return 'Just now';
+    }
   }
 
   submitExpenseForm() {
@@ -335,50 +777,73 @@ class UI {
     const amountValue = this.amountInput.value;
     const categoryValue = this.expenseCategory.value;
     const dateValue = this.expenseDate.value;
-    const amount = parseFloat(amountValue);
 
-    if (
-      expenseValue === '' ||
-      amountValue === '' ||
-      isNaN(amount) ||
-      amount <= 0 ||
-      categoryValue === '' ||
-      dateValue === ''
-    ) {
-        console.log('Invalid expense data');
-        this.expenseFeedback.classList.add('showItem');
-        this.expenseFeedback.innerHTML = `<p>${sanitizeHTML("All fields are required. Amount must be positive.")}</p>`;
-        setTimeout(() => {
-            this.expenseFeedback.classList.remove('showItem');
-        }, 3000);
-    } else {
-      console.log('Valid expense data, adding expense');
-      this.expenseInput.value = '';
-      this.amountInput.value = '';
-      this.expenseCategory.value = '';
-      const today = new Date().toISOString().split('T')[0];
-      this.expenseDate.value = today;
+    // Enhanced validation
+    const titleValidation = validateString(expenseValue, 1, 100);
+    const amountValidation = validateNumber(amountValue, 0.01, 999999.99);
+    const dateValidation = validateDate(dateValue);
+    
+    const validCategories = ['groceries', 'transportation', 'utilities', 'entertainment', 'healthcare', 'shopping', 'dining', 'education', 'travel', 'fitness', 'other'];
+    
+    if (!titleValidation.isValid) {
+        this.showValidationError('Expense title: ' + titleValidation.error);
+        return;
+    }
+    
+    if (!amountValidation.isValid) {
+        this.showValidationError('Amount: ' + amountValidation.error);
+        return;
+    }
+    
+    if (!validCategories.includes(categoryValue)) {
+        this.showValidationError('Please select a valid category.');
+        return;
+    }
+    
+    if (!dateValidation.isValid) {
+        this.showValidationError('Date: ' + dateValidation.error);
+        return;
+    }
 
-      let expense = {
-        id: this.itemID,
-        title: expenseValue,
-        amount: amount,
-        category: categoryValue,
-        date: dateValue
-      };
-      this.itemID++;
+    // All validations passed
+    console.log('Valid expense data, adding expense');
+    
+    // Clear form
+    this.expenseInput.value = '';
+    this.amountInput.value = '';
+    this.expenseCategory.value = '';
+    const today = new Date().toISOString().split('T')[0];
+    this.expenseDate.value = today;
 
-      this.itemList.push(expense);
-      console.log(`Expense added: ${JSON.stringify(expense)}, New item count: ${this.itemList.length}`);
+    // Create expense object with validated data
+    let expense = {
+      id: this.itemID,
+      title: titleValidation.value,
+      amount: amountValidation.value,
+      category: categoryValue,
+      date: dateValidation.value,
+      timestamp: new Date().toISOString()
+    };
+    this.itemID++;
 
-      this.filterExpenses();
+    this.itemList.push(expense);
+    console.log(`Expense added: ${JSON.stringify(expense)}, New item count: ${this.itemList.length}`);
 
-      this.showBalance();
-      this.saveToLocalStorage();
+    this.filterExpenses();
+    this.showBalance();
+    this.saveToLocalStorage();
+    this.updateCharts();
 
-      this.updateCharts();
+    this.showNotification('Expense added successfully!', 'success');
+  }
 
-      this.showNotification('Expense added successfully!', 'success');
+  showValidationError(message) {
+    if (this.expenseFeedback) {
+      this.expenseFeedback.classList.add('showItem');
+      this.expenseFeedback.innerHTML = `<div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i>${sanitizeHTML(message)}</div>`;
+      setTimeout(() => {
+        this.expenseFeedback.classList.remove('showItem');
+      }, 4000);
     }
   }
 
@@ -678,7 +1143,9 @@ class UI {
     const notificationDiv = document.createElement('div');
     notificationDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
     notificationDiv.setAttribute('role', 'alert');
+    notificationDiv.style.zIndex = '9999';
     notificationDiv.innerHTML = `
+      <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'danger' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
       ${message}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     `;
@@ -687,7 +1154,129 @@ class UI {
 
     setTimeout(() => {
       notificationDiv.remove();
-    }, 3000);
+    }, 4000);
+  }
+
+  sortExpenses(sortType) {
+    this.currentSort = sortType;
+    
+    switch (sortType) {
+        case 'date-desc':
+            this.filteredList.sort((a, b) => new Date(b.date) - new Date(a.date));
+            break;
+        case 'date-asc':
+            this.filteredList.sort((a, b) => new Date(a.date) - new Date(b.date));
+            break;
+        case 'amount-desc':
+            this.filteredList.sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount));
+            break;
+        case 'amount-asc':
+            this.filteredList.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount));
+            break;
+        case 'category':
+            this.filteredList.sort((a, b) => a.category.localeCompare(b.category));
+            break;
+    }
+    
+    this.updateExpenseList();
+    this.showNotification(`Sorted by ${sortType.replace('-', ' ')}`, 'info');
+  }
+
+  clearAllData() {
+    if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+        localStorage.clear();
+        this.itemList = [];
+        this.filteredList = [];
+        this.itemID = 0;
+        
+        // Reset all form inputs
+        if (this.budgetInput) this.budgetInput.value = '';
+        if (this.expenseInput) this.expenseInput.value = '';
+        if (this.amountInput) this.amountInput.value = '';
+        if (this.expenseCategory) this.expenseCategory.value = '';
+        
+        // Reset filters
+        if (this.expenseSearch) this.expenseSearch.value = '';
+        if (this.filterCategory) this.filterCategory.value = 'all';
+        if (this.filterPeriod) this.filterPeriod.value = 'all';
+        
+        this.showBalance();
+        this.updateExpenseList();
+        this.updateCharts();
+        
+        this.showNotification('All data cleared successfully', 'success');
+    }
+  }
+
+  resetFilters() {
+    if (this.expenseSearch) this.expenseSearch.value = '';
+    if (this.filterCategory) this.filterCategory.value = 'all';
+    if (this.filterPeriod) this.filterPeriod.value = 'all';
+    
+    this.filterExpenses();
+    this.showNotification('Filters reset', 'info');
+  }
+
+  setBudgetPreset(amount) {
+    if (this.budgetInput) {
+        this.budgetInput.value = amount;
+        this.budgetInput.focus();
+    }
+  }
+
+  setQuickAmount(amount) {
+    if (this.amountInput) {
+        this.amountInput.value = amount;
+        this.amountInput.focus();
+    }
+  }
+
+  generateMonthlyReport() {
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthExpenses = this.itemList.filter(expense => new Date(expense.date) >= monthStart);
+    
+    const reportData = {
+        month: now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+        totalExpenses: monthExpenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0),
+        transactionCount: monthExpenses.length,
+        categories: this.getCategoryTotals(),
+        budget: parseFloat(localStorage.getItem('budget_raw') || '0'),
+        generatedDate: new Date().toISOString()
+    };
+
+    const reportContent = `
+# Monthly Budget Report - ${reportData.month}
+
+## Summary
+- **Total Budget**: $${this.formatNumber(reportData.budget)}
+- **Total Expenses**: $${this.formatNumber(reportData.totalExpenses)}
+- **Remaining Balance**: $${this.formatNumber(reportData.budget - reportData.totalExpenses)}
+- **Number of Transactions**: ${reportData.transactionCount}
+
+## Category Breakdown
+${Object.entries(reportData.categories).map(([category, amount]) => 
+    `- **${category.charAt(0).toUpperCase() + category.slice(1)}**: $${this.formatNumber(amount)}`
+).join('\n')}
+
+## Recent Transactions
+${monthExpenses.slice(0, 10).map(expense => 
+    `- ${expense.date}: ${expense.title} - $${this.formatNumber(expense.amount)} (${expense.category})`
+).join('\n')}
+
+---
+Generated on ${new Date().toLocaleDateString()} by Budget Tracker
+    `;
+
+    const blob = new Blob([reportContent], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `budget-report-${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}.md`;
+    link.click();
+    URL.revokeObjectURL(url);
+
+    this.showNotification('Monthly report generated successfully!', 'success');
   }
 }
 
@@ -747,7 +1336,7 @@ function eventListeners() {
 
   if (ui.expenseSearch) {
     console.log('Adding input listener to expense search');
-    ui.expenseSearch.addEventListener('input', () => ui.filterExpenses());
+    ui.expenseSearch.addEventListener('input', debounce(() => ui.filterExpenses(), 300));
   }
   if (ui.filterCategory) {
     console.log('Adding change listener to filter category');
@@ -780,7 +1369,91 @@ function eventListeners() {
     });
   }
 
-  console.log('Event listeners setup complete');
+  // Enhanced functionality event listeners
+  if (ui.clearDataBtn) {
+    ui.clearDataBtn.addEventListener('click', () => ui.clearAllData());
+  }
+
+  if (ui.resetFiltersBtn) {
+    ui.resetFiltersBtn.addEventListener('click', () => ui.resetFilters());
+  }
+
+  if (ui.monthlyReportBtn) {
+    ui.monthlyReportBtn.addEventListener('click', () => ui.generateMonthlyReport());
+  }
+
+  // Budget preset buttons
+  if (ui.preset1000) {
+    ui.preset1000.addEventListener('click', () => ui.setBudgetPreset(1000));
+  }
+  if (ui.preset2500) {
+    ui.preset2500.addEventListener('click', () => ui.setBudgetPreset(2500));
+  }
+
+  // Quick amount buttons
+  ui.quickAmountBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const amount = btn.dataset.amount;
+      ui.setQuickAmount(amount);
+    });
+  });
+
+  // Sort functionality
+  ui.sortButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const sortType = btn.dataset.sort;
+      ui.sortExpenses(sortType);
+    });
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    // Ctrl/Cmd + E to focus on expense input
+    if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+      e.preventDefault();
+      if (ui.expenseInput) {
+        ui.expenseInput.focus();
+      }
+    }
+    
+    // Ctrl/Cmd + B to focus on budget input
+    if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+      e.preventDefault();
+      if (ui.budgetInput) {
+        ui.budgetInput.focus();
+      }
+    }
+    
+    // Escape to clear current form
+    if (e.key === 'Escape') {
+      if (document.activeElement === ui.expenseInput) {
+        ui.expenseInput.value = '';
+        ui.amountInput.value = '';
+        ui.expenseCategory.value = '';
+      } else if (document.activeElement === ui.budgetInput) {
+        ui.budgetInput.value = '';
+      }
+    }
+  });
+
+  // Auto-save functionality
+  let autoSaveTimeout;
+  function scheduleAutoSave() {
+    clearTimeout(autoSaveTimeout);
+    autoSaveTimeout = setTimeout(() => {
+      ui.saveToLocalStorage();
+    }, 1000);
+  }
+
+  // Form input auto-save
+  [ui.budgetInput, ui.expenseInput, ui.amountInput].forEach(input => {
+    if (input) {
+      input.addEventListener('input', scheduleAutoSave);
+    }
+  });
+
+  console.log('Enhanced event listeners setup complete');
 }
 
 document.addEventListener('DOMContentLoaded', function () {
