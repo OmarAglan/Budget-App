@@ -1,426 +1,276 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="A simple and effective budget tracking application"
-    />
-    <meta name="author" content="Omar Aglan" />
-    <title>Budget Tracker - Take Control of Your Finances</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet" />
-    
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#667eea">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Budget Tracker">
-    <link rel="apple-touch-icon" href="img/icon-192.png">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Budget Tracker - Smart Financial Management">
-    <meta property="og:description" content="Take control of your finances with intelligent budget tracking, expense management, and financial insights.">
-    <meta property="og:image" content="img/og-image.png">
-    <meta property="og:url" content="https://omardev.engineer/Budget-App/">
-    <meta property="og:type" content="website">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Budget Tracker - Smart Financial Management">
-    <meta name="twitter:description" content="Take control of your finances with intelligent budget tracking and insights.">
-    <meta name="twitter:image" content="img/og-image.png">
-  </head>
-  <body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="Budget Tracker - The ultimate personal finance management tool for smart budgeting and expense tracking." />
+  <meta name="author" content="Omar Aglan" />
+  <title>Budget Tracker - Master Your Finances</title>
+
+  <!-- CSS Dependencies -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom Design System -->
+  <link href="css/main.css" rel="stylesheet" />
+
+  <!-- PWA & Social Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f46e5">
+  <meta property="og:title" content="Budget Tracker - Smart Financial Management">
+  <meta property="og:description" content="Take control of your finances with intelligent budget tracking.">
+  <meta property="og:image" content="img/icon-512.png">
+  <link rel="apple-touch-icon" href="img/icon-192.png">
+</head>
+
+<body>
+  <!-- Navigation: Glassmorphism Style -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-wallet2 fs-4"></i>
+        <span>Budget Tracker</span>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto gap-lg-3">
+          <li class="nav-item">
+            <a class="nav-link active fw-semibold" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="Budget.html">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="About.html">About</a>
+          </li>
+        </ul>
+        <div class="d-lg-none mt-3">
+          <a href="Budget.html" class="btn btn-primary w-100">Launch App</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="py-5 mt-lg-4">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">
-          <i class="bi bi-wallet2 me-2"></i>Budget Tracker
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link active fw-semibold" href="index.html">
-                <i class="bi bi-house me-1"></i>Home
+        <div class="row align-items-center gy-5">
+          <div class="col-lg-6 order-2 order-lg-1">
+            <div
+              class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-4 border border-primary border-opacity-10">
+              <i class="bi bi-stars me-1"></i> New: AI Insights
+            </div>
+            <h1 class="display-3 fw-bold mb-4 lh-tight">
+              Master Your Money, <span class="text-primary">Effortlessly</span>.
+            </h1>
+            <p class="lead text-muted mb-5">
+              Stop guessing where your money goes. Track expenses, set smart budgets, and achieve financial freedom with
+              our privacy-focused tool.
+            </p>
+            <div class="d-flex flex-column flex-sm-row gap-3">
+              <a href="Budget.html" class="btn btn-primary btn-lg px-5 py-3">
+                <i class="bi bi-rocket-takeoff me-2"></i> Start Budgeting
               </a>
+              <a href="#features" class="btn btn-outline-primary btn-lg px-4 py-3">
+                Learn More
+              </a>
+            </div>
+            <div class="mt-4 pt-2 d-flex align-items-center gap-3 text-muted small">
+              <span><i class="bi bi-shield-check text-success me-1"></i> No Signup Required</span>
+              <span><i class="bi bi-hdd-network text-success me-1"></i> 100% Local Data</span>
+            </div>
+          </div>
+
+          <!-- Hero Visual / Graphic -->
+          <div class="col-lg-6 order-1 order-lg-2">
+            <div class="position-relative">
+              <!-- Abstract Decorative Elements -->
+              <div
+                class="position-absolute top-0 end-0 translate-middle-y bg-primary opacity-10 rounded-circle blur-3xl"
+                style="width: 300px; height: 300px; filter: blur(60px);"></div>
+
+              <!-- Hero Card -->
+              <div class="card border-0 shadow-lg hover-lift position-relative z-1" style="transform: rotate(-2deg);">
+                <div class="card-body p-4">
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                      <h6 class="text-muted text-uppercase small fw-bold mb-1">Total Balance</h6>
+                      <h3 class="mb-0 fw-bold text-primary">$2,450.00</h3>
+                    </div>
+                    <div class="icon-box bg-primary bg-opacity-10 p-3 rounded-circle text-primary">
+                      <i class="bi bi-wallet2 fs-4"></i>
+                    </div>
+                  </div>
+
+                  <!-- Fake Chart Visualization -->
+                  <div class="d-flex align-items-end gap-2" style="height: 100px;">
+                    <div class="w-100 bg-primary bg-opacity-10 rounded-top" style="height: 40%"></div>
+                    <div class="w-100 bg-primary bg-opacity-25 rounded-top" style="height: 60%"></div>
+                    <div class="w-100 bg-primary bg-opacity-50 rounded-top" style="height: 30%"></div>
+                    <div class="w-100 bg-primary rounded-top" style="height: 85%"></div>
+                    <div class="w-100 bg-primary bg-opacity-50 rounded-top" style="height: 55%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section id="features" class="py-5">
+      <div class="container py-5">
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-8 text-center">
+            <h2 class="fw-bold display-6 mb-3">Everything you need to grow</h2>
+            <p class="text-muted lead">Powerful features wrapped in a simple, beautiful interface.</p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Feature 1 -->
+          <div class="col-md-4">
+            <div class="card h-100 border-0">
+              <div class="card-body p-4">
+                <div class="stat-icon bg-success bg-opacity-10 text-success mb-4 mx-0">
+                  <i class="bi bi-lightning-charge"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Instant Tracking</h4>
+                <p class="text-muted mb-0">Add expenses in seconds. Our smart category system organizes your spending
+                  automatically.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="col-md-4">
+            <div class="card h-100 border-0">
+              <div class="card-body p-4">
+                <div class="stat-icon bg-primary bg-opacity-10 text-primary mb-4 mx-0">
+                  <i class="bi bi-graph-up-arrow"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Visual Analytics</h4>
+                <p class="text-muted mb-0">Understand your financial health at a glance with interactive charts and
+                  trend analysis.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="col-md-4">
+            <div class="card h-100 border-0">
+              <div class="card-body p-4">
+                <div class="stat-icon bg-danger bg-opacity-10 text-danger mb-4 mx-0">
+                  <i class="bi bi-shield-lock"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Private & Secure</h4>
+                <p class="text-muted mb-0">Your data never leaves your device. We use LocalStorage for banking-level
+                  privacy.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5 mb-5">
+      <div class="container">
+        <div class="card bg-primary text-white overflow-hidden border-0">
+          <div class="card-body p-5 text-center position-relative">
+            <div class="position-relative z-1">
+              <h2 class="display-5 fw-bold mb-4">Ready to take control?</h2>
+              <p class="lead mb-4 opacity-75">Join thousands of users managing their money smarter.</p>
+              <a href="Budget.html" class="btn btn-light text-primary btn-lg fw-bold px-5 shadow-lg">
+                Launch Dashboard
+              </a>
+            </div>
+            <!-- Decorative Circle -->
+            <div class="position-absolute top-0 start-0 translate-middle rounded-circle bg-white opacity-10"
+              style="width: 400px; height: 400px;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Semantic Footer -->
+  <footer class="py-5 bg-dark text-white mt-auto">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-4">
+          <a href="#" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-3">
+            <i class="bi bi-wallet2 fs-4"></i>
+            <span class="fw-bold fs-5">Budget Tracker</span>
+          </a>
+          <p class="text-secondary">Empowering financial freedom through smart, private, and simple tools.</p>
+        </div>
+        <div class="col-lg-2 offset-lg-6">
+          <h6 class="fw-bold mb-3">Links</h6>
+          <ul class="list-unstyled text-secondary">
+            <li class="mb-2"><a href="index.html" class="text-decoration-none text-secondary hover-white">Home</a></li>
+            <li class="mb-2"><a href="Budget.html" class="text-decoration-none text-secondary hover-white">Dashboard</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link fw-semibold" href="Budget.html">
-                <i class="bi bi-calculator me-1"></i>Budget
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fw-semibold" href="About.html">
-                <i class="bi bi-info-circle me-1"></i>About
-              </a>
+            <li class="mb-2"><a href="About.html" class="text-decoration-none text-secondary hover-white">About Us</a>
             </li>
           </ul>
         </div>
       </div>
-    </nav>
-
-    <div class="container py-4">
-      <!-- Page Title -->
-      <div class="row mb-4">
-        <div class="col-12">
-          <h2 class="mb-0 fw-bold"><i class="bi bi-house-door"></i> Welcome to Budget Tracker</h2>
-          <p class="text-muted">Take control of your finances today</p>
-        </div>
+      <div class="border-top border-secondary border-opacity-25 pt-4 mt-4 text-center text-secondary small">
+        <p class="mb-0">&copy; 2024 Budget Tracker. Open Source Project.</p>
       </div>
-
-      <section class="hero py-5 mb-5">
-        <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%); backdrop-filter: blur(10px);">
-          <div class="card-body p-5">
-            <div class="row align-items-center">
-              <div class="col-lg-6">
-                <div class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3">
-                  <i class="bi bi-star-fill me-1"></i>
-                  #1 Personal Finance Tool
-                </div>
-                <h1 class="display-3 fw-bold mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                  Master Your Money with Smart Budgeting
-                </h1>
-                <p class="lead mb-4 text-secondary">
-                  Transform your financial future with our intelligent budget tracker. 
-                  Get real-time insights, smart recommendations, and achieve your 
-                  financial goals faster than ever before.
-                </p>
-                <div class="row mb-4">
-                  <div class="col-4 text-center">
-                    <div class="h4 fw-bold text-primary mb-1">10K+</div>
-                    <div class="small text-muted">Happy Users</div>
-                  </div>
-                  <div class="col-4 text-center">
-                    <div class="h4 fw-bold text-success mb-1">$2M+</div>
-                    <div class="small text-muted">Money Saved</div>
-                  </div>
-                  <div class="col-4 text-center">
-                    <div class="h4 fw-bold text-info mb-1">4.9★</div>
-                    <div class="small text-muted">User Rating</div>
-                  </div>
-                </div>
-                <div class="d-flex gap-3 flex-wrap">
-                  <a href="Budget.html" class="btn btn-primary btn-lg shadow">
-                    <i class="bi bi-rocket-takeoff me-2"></i>Start Free Today
-                  </a>
-                  <a href="About.html" class="btn btn-outline-primary btn-lg shadow-sm">
-                    <i class="bi bi-play-circle me-2"></i>Watch Demo
-                  </a>
-                </div>
-                <div class="mt-3">
-                  <small class="text-muted">
-                    <i class="bi bi-shield-check me-1 text-success"></i>
-                    100% Free • No Registration Required • Privacy First
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-6 d-none d-lg-block">
-                <div class="position-relative">
-                  <div class="card border-0 shadow-lg hover-lift" style="transform: rotate(5deg);">
-                    <div class="card-body p-4">
-                      <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="mb-0 fw-bold">Monthly Budget</h6>
-                        <span class="badge bg-success">On Track</span>
-                      </div>
-                      <div class="row g-3">
-                        <div class="col-6">
-                          <div class="text-center p-2 bg-light rounded">
-                            <div class="h5 mb-0 text-primary">$2,500</div>
-                            <small class="text-muted">Budget</small>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="text-center p-2 bg-light rounded">
-                            <div class="h5 mb-0 text-danger">$1,850</div>
-                            <small class="text-muted">Spent</small>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="progress mt-3" style="height: 8px;">
-                        <div class="progress-bar bg-success" style="width: 74%"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <img
-                    src="img/contBcg-0.jpeg"
-                    alt="Budget Management"
-                    class="img-fluid rounded-3 shadow position-absolute"
-                    style="top: -20px; right: -20px; width: 80%; z-index: -1; opacity: 0.1;"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="features py-5">
-        <div class="row mb-5">
-          <div class="col-12 text-center">
-            <h2 class="display-5 fw-bold mb-3">
-              <i class="bi bi-stars me-2" style="color: #ffd700;"></i>
-              Powerful Features for Smart Budgeting
-            </h2>
-            <p class="lead text-muted">Everything you need to take control of your finances</p>
-          </div>
-        </div>
-        <div class="row g-4">
-          <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 shadow-lg hover-lift">
-              <div class="card-body text-center p-5">
-                <div class="stat-icon bg-primary mb-4">
-                  <i class="bi bi-graph-up-arrow text-primary"></i>
-                </div>
-                <h3 class="h4 fw-bold mb-3">Smart Expense Tracking</h3>
-                <p class="text-muted mb-4">
-                  Advanced categorization with AI-powered insights and spending pattern analysis.
-                </p>
-                <ul class="list-unstyled text-start">
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Auto-categorization</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Real-time analytics</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Spending alerts</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 shadow-lg hover-lift">
-              <div class="card-body text-center p-5">
-                <div class="stat-icon bg-success mb-4">
-                  <i class="bi bi-piggy-bank text-success"></i>
-                </div>
-                <h3 class="h4 fw-bold mb-3">Goal-Based Savings</h3>
-                <p class="text-muted mb-4">
-                  Set financial goals and track progress with intelligent recommendations.
-                </p>
-                <ul class="list-unstyled text-start">
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Custom savings goals</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Progress tracking</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Achievement rewards</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 shadow-lg hover-lift">
-              <div class="card-body text-center p-5">
-                <div class="stat-icon bg-info mb-4">
-                  <i class="bi bi-shield-check text-info"></i>
-                </div>
-                <h3 class="h4 fw-bold mb-3">Privacy & Security</h3>
-                <p class="text-muted mb-4">
-                  Bank-level security with local data storage and zero data collection.
-                </p>
-                <ul class="list-unstyled text-start">
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Local storage only</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>No data tracking</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Open source</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 shadow-lg hover-lift">
-              <div class="card-body text-center p-5">
-                <div class="stat-icon bg-warning mb-4">
-                  <i class="bi bi-lightning text-warning"></i>
-                </div>
-                <h3 class="h4 fw-bold mb-3">Lightning Fast</h3>
-                <p class="text-muted mb-4">
-                  Instant loading and real-time updates for seamless budget management.
-                </p>
-                <ul class="list-unstyled text-start">
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Instant calculations</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Real-time charts</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Auto-save</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 shadow-lg hover-lift">
-              <div class="card-body text-center p-5">
-                <div class="stat-icon bg-danger mb-4">
-                  <i class="bi bi-phone text-danger"></i>
-                </div>
-                <h3 class="h4 fw-bold mb-3">Mobile Optimized</h3>
-                <p class="text-muted mb-4">
-                  Perfect experience on any device with PWA capabilities.
-                </p>
-                <ul class="list-unstyled text-start">
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Responsive design</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Offline support</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>App-like experience</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 shadow-lg hover-lift">
-              <div class="card-body text-center p-5">
-                <div class="stat-icon bg-secondary mb-4">
-                  <i class="bi bi-robot text-secondary"></i>
-                </div>
-                <h3 class="h4 fw-bold mb-3">AI-Powered Insights</h3>
-                <p class="text-muted mb-4">
-                  Get personalized recommendations and financial health scores.
-                </p>
-                <ul class="list-unstyled text-start">
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Smart predictions</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Health scoring</li>
-                  <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Custom tips</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="cta py-5 mt-5">
-        <div class="card border-0 shadow-lg text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-          <div class="card-body p-5">
-            <div class="row justify-content-center">
-              <div class="col-lg-8 text-center">
-                <div class="mb-4">
-                  <i class="bi bi-rocket-takeoff display-4 mb-3"></i>
-                </div>
-                <h2 class="display-5 fw-bold mb-4">Ready to Transform Your Financial Life?</h2>
-                <p class="lead mb-4 opacity-90">
-                  Join over 10,000 users who have already taken control of their finances. 
-                  Start your journey to financial freedom today - completely free!
-                </p>
-                <div class="d-flex justify-content-center gap-3 mb-4">
-                  <div class="text-center">
-                    <div class="h5 fw-bold mb-1">✓ No Sign-up</div>
-                    <small class="opacity-75">Start immediately</small>
-                  </div>
-                  <div class="text-center">
-                    <div class="h5 fw-bold mb-1">✓ 100% Free</div>
-                    <small class="opacity-75">Always free to use</small>
-                  </div>
-                  <div class="text-center">
-                    <div class="h5 fw-bold mb-1">✓ Private</div>
-                    <small class="opacity-75">Your data stays local</small>
-                  </div>
-                </div>
-                <a href="Budget.html" class="btn btn-light btn-lg shadow px-5 py-3 fw-bold">
-                  <i class="bi bi-arrow-right-circle me-2"></i>Start Budgeting Now
-                </a>
-                <div class="mt-3">
-                  <small class="opacity-75">
-                    <i class="bi bi-clock me-1"></i>
-                    Takes less than 30 seconds to get started
-                  </small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
+  </footer>
 
-    <footer class="footer py-4 bg-dark text-white">
-      <div class="container text-center">
-        <p class="mb-0">© 2024 Budget Tracker. All rights reserved.</p>
-      </div>
-    </footer>
+  <!-- Scripts -->
+  <script src="js/jquery-3.7.1.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/jquery-3.7.1.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/charts.js"></script>
-    
-    <!-- PWA Registration Script -->
-    <script>
-      // Register service worker for PWA functionality
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-              console.log('SW registered: ', registration);
-              
-              // Show install prompt when appropriate
-              let deferredPrompt;
-              window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                
-                // Show custom install button after 3 seconds
-                setTimeout(() => {
-                  showInstallPrompt(deferredPrompt);
-                }, 3000);
-              });
-            })
-            .catch(registrationError => {
-              console.log('SW registration failed: ', registrationError);
-            });
-        });
-      }
+  <!-- PWA Install Logic -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.error('SW registration failed:', err));
+      });
+    }
 
-      function showInstallPrompt(deferredPrompt) {
-        // Create install prompt
-        const installBanner = document.createElement('div');
-        installBanner.className = 'alert alert-info alert-dismissible fade show position-fixed bottom-0 start-50 translate-middle-x m-3';
-        installBanner.style.zIndex = '9999';
-        installBanner.innerHTML = `
-          <div class="d-flex align-items-center">
-            <i class="bi bi-download me-2"></i>
-            <div class="flex-grow-1">
-              <strong>Install Budget Tracker</strong><br>
-              <small>Get the full app experience on your device!</small>
-            </div>
-            <button class="btn btn-primary btn-sm ms-2" id="install-app">Install</button>
-            <button type="button" class="btn-close ms-2" data-bs-dismiss="alert"></button>
-          </div>
-        `;
-        
-        document.body.appendChild(installBanner);
-        
-        document.getElementById('install-app').addEventListener('click', () => {
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('User accepted the install prompt');
-            }
-            deferredPrompt = null;
-            installBanner.remove();
-          });
-        });
-      }
+    // Defer PWA install prompt logic
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstallPromotion();
+    });
 
-      // Add keyboard shortcuts info
-      document.addEventListener('DOMContentLoaded', () => {
-        // Add keyboard shortcuts tooltip
-        const shortcutsInfo = document.createElement('div');
-        shortcutsInfo.className = 'position-fixed bottom-0 end-0 m-3';
-        shortcutsInfo.innerHTML = `
-          <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="popover" 
-                  data-bs-placement="top" data-bs-html="true" 
-                  data-bs-content="<strong>Keyboard Shortcuts:</strong><br>
-                                   Ctrl+B - Focus Budget Input<br>
-                                   Ctrl+E - Focus Expense Input<br>
-                                   Esc - Clear Current Form"
-                  title="Keyboard Shortcuts">
-            <i class="bi bi-keyboard"></i>
+    function showInstallPromotion() {
+      const installBtn = document.createElement('div');
+      installBtn.className = 'position-fixed bottom-0 start-50 translate-middle-x mb-4 z-3';
+      installBtn.innerHTML = `
+          <button class="btn btn-dark shadow-lg rounded-pill px-4 py-2 d-flex align-items-center gap-2">
+            <i class="bi bi-download"></i> Install App
           </button>
         `;
-        document.body.appendChild(shortcutsInfo);
-        
-        // Initialize popover
-        const popover = new bootstrap.Popover(shortcutsInfo.querySelector('[data-bs-toggle="popover"]'));
+      document.body.appendChild(installBtn);
+
+      installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            deferredPrompt = null;
+            installBtn.remove();
+          }
+        }
       });
-    </script>
-  </body>
+    }
+  </script>
+</body>
+
 </html>
