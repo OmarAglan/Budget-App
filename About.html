@@ -1,213 +1,210 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Learn more about our budget tracking application"
-    />
-    <meta name="author" content="Omar Aglan" />
-    <title>About - Budget Tracker</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet" />
-    
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#667eea">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Budget Tracker">
-    <link rel="apple-touch-icon" href="img/icon-192.png">
-  </head>
-  <body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Learn more about Budget Tracker's mission to simplify personal finance." />
+  <meta name="author" content="Omar Aglan" />
+  <title>About Us - Budget Tracker</title>
+
+  <!-- Dependencies -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Design System -->
+  <link href="css/main.css" rel="stylesheet" />
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f46e5">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-wallet2 fs-4"></i>
+        <span>Budget Tracker</span>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto gap-lg-3">
+          <li class="nav-item"><a class="nav-link fw-semibold" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="Budget.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active fw-semibold" href="About.html">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Page Header -->
+    <section class="py-5">
+      <div class="container text-center">
+        <div
+          class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3 border border-primary border-opacity-10">
+          Our Mission
+        </div>
+        <h1 class="display-4 fw-bold mb-3">Simplifying Financial Freedom</h1>
+        <p class="lead text-muted mx-auto" style="max-width: 600px;">
+          We believe that managing your money shouldn't be a chore. It should be intuitive, private, and empowering.
+        </p>
+      </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="pb-5">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">
-          <i class="bi bi-wallet2"></i> Budget Tracker
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+        <div class="card border-0 shadow-lg overflow-hidden">
+          <div class="row g-0 align-items-center">
+            <div class="col-lg-6 p-4 p-lg-5">
+              <h2 class="fw-bold mb-4">Why we built this?</h2>
+              <p class="text-muted mb-4">
+                Traditional finance apps are often cluttered, require sensitive bank connections, or sell your data. We
+                wanted to build something different.
+              </p>
+              <div class="d-flex flex-column gap-3">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="icon-box bg-success bg-opacity-10 text-success rounded-circle p-2">
+                    <i class="bi bi-check-lg"></i>
+                  </div>
+                  <span><strong>100% Offline Capable:</strong> Works without internet.</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <div class="icon-box bg-success bg-opacity-10 text-success rounded-circle p-2">
+                    <i class="bi bi-check-lg"></i>
+                  </div>
+                  <span><strong>Privacy First:</strong> Your data stays in your browser.</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <div class="icon-box bg-success bg-opacity-10 text-success rounded-circle p-2">
+                    <i class="bi bi-check-lg"></i>
+                  </div>
+                  <span><strong>Open Source:</strong> Transparent and community-driven.</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <!-- Using inline background for the image to ensure it covers the area perfectly -->
+              <div
+                style="background-image: url('img/contBcg-1.jpeg'); background-size: cover; background-position: center; min-height: 400px; height: 100%;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Values / Features Grid -->
+    <section class="py-5 bg-light bg-opacity-50">
+      <div class="container py-4">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 hover-lift text-center p-4">
+              <div class="stat-icon bg-primary bg-opacity-10 text-primary mb-3 mx-auto">
+                <i class="bi bi-laptop"></i>
+              </div>
+              <h5 class="fw-bold">Accessible Design</h5>
+              <p class="text-muted small mb-0">Built with modern accessibility standards to ensure everyone can manage
+                their finances effectively.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 hover-lift text-center p-4">
+              <div class="stat-icon bg-danger bg-opacity-10 text-danger mb-3 mx-auto">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <h5 class="fw-bold">Zero Data Collection</h5>
+              <p class="text-muted small mb-0">We don't track you. No cookies, no analytics, no external servers. Just
+                you and your budget.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 hover-lift text-center p-4">
+              <div class="stat-icon bg-success bg-opacity-10 text-success mb-3 mx-auto">
+                <i class="bi bi-lightning-charge"></i>
+              </div>
+              <h5 class="fw-bold">Lightning Fast</h5>
+              <p class="text-muted small mb-0">Optimized performance using vanilla JavaScript and local storage for
+                instant interactions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="py-5">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold">How to get started</h2>
+          <p class="text-muted">Three simple steps to financial control.</p>
+        </div>
+
+        <div class="row g-4 text-center">
+          <div class="col-md-4 position-relative">
+            <div class="display-1 fw-bold text-light mb-3" style="font-size: 6rem; line-height: 0.8;">1</div>
+            <h5 class="fw-bold">Set a Budget</h5>
+            <p class="text-muted small px-4">Define your monthly limit. Use our presets or enter a custom amount to
+              guide your spending.</p>
+          </div>
+          <div class="col-md-4 position-relative">
+            <div class="display-1 fw-bold text-light mb-3" style="font-size: 6rem; line-height: 0.8;">2</div>
+            <h5 class="fw-bold">Track Expenses</h5>
+            <p class="text-muted small px-4">Log every transaction. Categorize them to see exactly where your money is
+              going.</p>
+          </div>
+          <div class="col-md-4 position-relative">
+            <div class="display-1 fw-bold text-light mb-3" style="font-size: 6rem; line-height: 0.8;">3</div>
+            <h5 class="fw-bold">Analyze & Save</h5>
+            <p class="text-muted small px-4">Review your dashboard charts, identify trends, and adjust your habits to
+              save more.</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <a href="Budget.html" class="btn btn-primary btn-lg px-5 shadow-lg hover-lift">
+            Start Now
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark text-white mt-auto">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-4">
+          <a href="#" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-3">
+            <i class="bi bi-wallet2 fs-4"></i>
+            <span class="fw-bold fs-5">Budget Tracker</span>
+          </a>
+          <p class="text-secondary">Empowering financial freedom through smart, private, and simple tools.</p>
+        </div>
+        <div class="col-lg-2 offset-lg-6">
+          <h6 class="fw-bold mb-3">Links</h6>
+          <ul class="list-unstyled text-secondary">
+            <li class="mb-2"><a href="index.html" class="text-decoration-none text-secondary hover-white">Home</a></li>
+            <li class="mb-2"><a href="Budget.html" class="text-decoration-none text-secondary hover-white">Dashboard</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="Budget.html">Budget</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="About.html">About</a>
+            <li class="mb-2"><a href="About.html" class="text-decoration-none text-secondary hover-white">About Us</a>
             </li>
           </ul>
         </div>
       </div>
-    </nav>
-
-    <div class="container py-4">
-      <!-- Page Title -->
-      <div class="row mb-4">
-        <div class="col-12">
-          <h2 class="mb-0 fw-bold"><i class="bi bi-info-circle"></i> About Budget Tracker</h2>
-          <p class="text-muted">Learn more about our mission and features</p>
-        </div>
+      <div class="border-top border-secondary border-opacity-25 pt-4 mt-4 text-center text-secondary small">
+        <p class="mb-0">&copy; 2024 Budget Tracker. Open Source Project.</p>
       </div>
-
-      <section class="about-hero py-4 mb-5">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4">
-            <div class="row align-items-center">
-              <div class="col-lg-6">
-                <h1 class="display-5 fw-bold mb-4 text-dark">Our Story</h1>
-                <p class="lead mb-4 text-secondary">
-                  Our mission is to help you take control of your finances with a
-                  simple, effective, and user-friendly budget tracking solution.
-                </p>
-                <p class="text-muted">
-                  We built Budget Tracker with one goal in mind - to make personal finance 
-                  management accessible to everyone. Our team believes that financial wellness 
-                  shouldn't be complicated or intimidating.
-                </p>
-              </div>
-              <div class="col-lg-6">
-                <img
-                  src="img/contBcg-1.jpeg"
-                  alt="About Us"
-                  class="img-fluid rounded-3 shadow"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="features py-4">
-        <div class="row mb-4">
-          <div class="col-12">
-            <h2 class="fw-bold"><i class="bi bi-stars"></i> Key Features</h2>
-            <p class="text-muted">What makes Budget Tracker stand out from the rest</p>
-          </div>
-        </div>
-        <div class="row g-4">
-          <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-body text-center p-4">
-                <div class="p-3 rounded-circle bg-primary bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
-                  <i class="bi bi-laptop fs-2 text-primary"></i>
-                </div>
-                <h3 class="h4 fw-bold">Easy to Use</h3>
-                <p class="text-muted mb-0">
-                  Simple interface that makes budget tracking accessible to
-                  everyone.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-body text-center p-4">
-                <div class="p-3 rounded-circle bg-danger bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
-                  <i class="bi bi-shield-check fs-2 text-danger"></i>
-                </div>
-                <h3 class="h4 fw-bold">Privacy First</h3>
-                <p class="text-muted mb-0">
-                  Your financial data stays on your device, ensuring complete
-                  privacy.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-body text-center p-4">
-                <div class="p-3 rounded-circle bg-success bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
-                  <i class="bi bi-lightning-charge fs-2 text-success"></i>
-                </div>
-                <h3 class="h4 fw-bold">Fast & Reliable</h3>
-                <p class="text-muted mb-0">
-                  Quick calculations and reliable expense tracking at your
-                  fingertips.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="how-it-works py-5 mt-4">
-        <div class="card border-0 shadow-sm">
-          <div class="card-header bg-white py-3 border-0">
-            <h2 class="fw-bold mb-0"><i class="bi bi-gear"></i> How It Works</h2>
-          </div>
-          <div class="card-body p-4">
-            <div class="row g-4">
-              <div class="col-md-4">
-                <div class="text-center">
-                  <div class="p-3 rounded-circle bg-primary bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
-                    <span class="fw-bold fs-4">1</span>
-                  </div>
-                  <h4 class="fw-bold">Set Your Budget</h4>
-                  <p class="text-muted">Enter your total budget amount to get started.</p>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="text-center">
-                  <div class="p-3 rounded-circle bg-primary bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
-                    <span class="fw-bold fs-4">2</span>
-                  </div>
-                  <h4 class="fw-bold">Track Expenses</h4>
-                  <p class="text-muted">Add your expenses with categories and dates.</p>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="text-center">
-                  <div class="p-3 rounded-circle bg-primary bg-opacity-10 mx-auto mb-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
-                    <span class="fw-bold fs-4">3</span>
-                  </div>
-                  <h4 class="fw-bold">Visualize & Save</h4>
-                  <p class="text-muted">View charts and reports to understand your spending habits.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="cta py-5 mt-4">
-        <div class="card border-0 shadow-sm bg-primary text-white">
-          <div class="card-body p-5">
-            <div class="row justify-content-center">
-              <div class="col-lg-8 text-center">
-                <h2 class="mb-4 fw-bold">Start Your Financial Journey Today</h2>
-                <p class="lead mb-4">
-                  Join thousands of users who have already taken control of their
-                  finances with our budget tracker.
-                </p>
-                <a href="Budget.html" class="btn btn-light btn-lg shadow-sm">
-                  <i class="bi bi-arrow-right-circle me-2"></i>Try It Now
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
+  </footer>
 
-    <footer class="footer py-4 bg-dark text-white">
-      <div class="container text-center">
-        <p class="mb-0">© 2024 Budget Tracker. All rights reserved.</p>
-      </div>
-    </footer>
+  <!-- Scripts -->
+  <script src="js/jquery-3.7.1.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+</body>
 
-    <script src="js/jquery-3.7.1.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-  </body>
 </html>
